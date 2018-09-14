@@ -22,8 +22,9 @@ namespace PatrolWebApp.Controllers
     [Route("api/[controller]")]
     public class MaintainenceController : Controller
     {
-        
-        public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
+
+        // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
+        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
 
         [HttpPost("deviceslist")]
         public DataTable PostDevicesList()
@@ -31,7 +32,7 @@ namespace PatrolWebApp.Controllers
            
 
             SqlConnection cont = new SqlConnection();
-            cont.ConnectionString = constr2;
+            cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter("select * from Devices ", cont);
@@ -49,10 +50,10 @@ namespace PatrolWebApp.Controllers
 
 
             NpgsqlConnection cont = new NpgsqlConnection();
-            cont.ConnectionString = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+            cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,d.Type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID ", cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
@@ -68,7 +69,7 @@ namespace PatrolWebApp.Controllers
 
 
             NpgsqlConnection cont = new NpgsqlConnection();
-            cont.ConnectionString = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+            cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
             string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model, Devices.Type, Persons.MilNumber, ";
@@ -116,7 +117,7 @@ namespace PatrolWebApp.Controllers
 
 
             NpgsqlConnection cont = new NpgsqlConnection();
-            cont.ConnectionString = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+            cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
             String Qry = "SELECT AhwalMappingID, AhwalID, ShiftID, SectorID, DeviceRoleID, CityGroupID,(Select MilNumber From Persons where PersonID = AhwalMapping.PersonID) as MilNumber,";

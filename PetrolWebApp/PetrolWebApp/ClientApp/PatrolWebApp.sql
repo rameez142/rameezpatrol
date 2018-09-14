@@ -42,14 +42,23 @@ insert into DevicesCheckInOut values (21,10,5,4,1,CURRENT_TIMESTAMP);
 
 select * from devices
 select * from Persons
+delete from devices;
+insert into Devices values (1,1,'1234','2011',0,0,'PAT123456',1);
+insert into Devices values (4,2,'23545','2012',0,0,'PAT23545',1);
 
-insert into Devices values (1,1,1,'1234','2011','PATROL',0,0,'PAT123456');
-insert into Devices values (4,2,1,'23545','2012','PATROL',0,0,'PAT23545');
+insert into Devices values (2,1,'456','',0,0,'HAND456',2);
+insert into Devices values (5,3,'888','',0,0,'HAND888',2);
 
-insert into Devices values (2,1,1,'456','','HANDHELD',0,0,'HAND456');
-insert into Devices values (5,3,1,'888','','HANDHELD',0,0,'HAND888');
+insert into Devices values (3,1,'789','',0,0,'ACC789',3);
 
-insert into Devices values (3,1,1,'789','','ACCESSORY',0,0,'ACC789');
+
+
+insert into Devices values (6,1,'666','',0,0,'PAT666',3);
+
+insert into devicetypes values (1,'PATROL','PAT');
+insert into devicetypes values (2,'HANDHELD','HAN');
+insert into devicetypes values (3,'ACCESSORY','ACC');
+select 
 
 commit;
 update Devices set devicenumber = '123456';

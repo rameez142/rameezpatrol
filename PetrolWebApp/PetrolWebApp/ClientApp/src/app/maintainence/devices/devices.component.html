@@ -18,10 +18,10 @@
                 (onToolbarPreparing)="onToolbarPreparing($event)"
             
               >    
-                <dxo-paging [pageSize]="20"></dxo-paging>
+                <dxo-paging [pageSize]="2"></dxo-paging>
                 <dxo-pager 
                 [showPageSizeSelector]="true"
-                [allowedPageSizes]="[20, 50, 100]"
+                [allowedPageSizes]="[2, 50, 100]"
                 [showInfo]="true">
             </dxo-pager>
                
@@ -60,7 +60,7 @@
                 [closeOnOutsideClick]="false"
                 (onShown)="onShown()">
             </dx-load-panel>
-            <dxi-column dataField="name" caption="Ahwal" [groupIndex]="0"></dxi-column>
+            <dxi-column dataField="name" caption="Ahwal" ></dxi-column>
             <dxi-column dataField="devicenumber"></dxi-column>
             <dxi-column dataField="type"  [groupIndex]="2"></dxi-column>
             <dxi-column dataField="model"></dxi-column>
