@@ -1,0 +1,72 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()" method="post" enctype="multipart/form-data">
+
+<header class="pageHeader">
+  <h3><i class="fa fa-handshake-o fa-lg page-caption" aria-hidden="true"></i> Devices</h3>
+</header>
+
+                <dx-data-grid 
+                id="gridContainer"
+                [dataSource]="dataSource"
+                [showBorders]="true" 
+                [rtlEnabled]="true"
+                [hoverStateEnabled]="true"
+                [selectedRowKeys]="[]"
+                (onRowRemoved)="RowDelete($event)"
+                (onRowInserted)="RowAdd($event)"
+                (onRowUpdated)="RowUpdate($event)"
+                (onToolbarPreparing)="onToolbarPreparing($event)"
+            
+              >    
+                <dxo-paging [pageSize]="20"></dxo-paging>
+                <dxo-pager 
+                [showPageSizeSelector]="true"
+                [allowedPageSizes]="[20, 50, 100]"
+                [showInfo]="true">
+            </dxo-pager>
+               
+            <dxo-editing 
+            mode="popup"
+            [allowUpdating]="false"
+            [allowDeleting]="true"
+            [allowAdding]="true">
+            </dxo-editing>    
+                    
+                   <dxo-popup
+                    title="Vehicle Info"
+                    [showTitle]="true"
+                    [width]="300"
+                    [height]="50"
+                    [position]="{ my: 'top', at: 'top', of: window }">
+                </dxo-popup>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
+            
+            <dxo-header-filter 
+            [visible]="true"></dxo-header-filter>
+            <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
+            <dxo-state-storing [enabled]="true" type="localStorage" storageKey="storage"></dxo-state-storing>
+            <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dx-load-panel
+                #loadPanel
+                shadingColor="rgba(0,0,0,0.4)"
+                [position]="{ of: '#gridContainer' }"
+                [(visible)]="loadingVisible"
+                [showIndicator]="true"
+                [showPane]="true"
+                [shading]="true"
+                [closeOnOutsideClick]="false"
+                (onShown)="onShown()">
+            </dx-load-panel>
+            <dxi-column dataField="name" caption="Ahwal" [groupIndex]="0"></dxi-column>
+            <dxi-column dataField="devicenumber"></dxi-column>
+            <dxi-column dataField="type"  [groupIndex]="2"></dxi-column>
+            <dxi-column dataField="model"></dxi-column>
+            <dxi-column dataField="barcode"></dxi-column>
+            <dxi-column dataField="defective"></dxi-column>
+            <dxi-column dataField="rental"></dxi-column>
+              </dx-data-grid>
+          </form>
+</div>
