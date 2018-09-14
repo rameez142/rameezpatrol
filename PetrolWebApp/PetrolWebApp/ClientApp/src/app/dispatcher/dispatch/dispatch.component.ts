@@ -16,7 +16,6 @@ export class DispatchComponent implements OnInit {
   constructor(private svc:CommonService) {
     this.showLoadPanel();
    }
-
    onShown() {
     setTimeout(() => {
         this.loadingVisible = false;
