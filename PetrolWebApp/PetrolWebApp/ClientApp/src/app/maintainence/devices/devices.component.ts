@@ -2,6 +2,7 @@ import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular"
 import notify from '../../../../node_modules/devextreme/ui/notify';
+import {devicecls} from '..//devices/devicecls';
 
 
 @Component({
@@ -12,6 +13,7 @@ import notify from '../../../../node_modules/devextreme/ui/notify';
 export class DevicesComponent implements OnInit {
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
+  public deviceobj:devicecls = new devicecls();
 
   constructor(private svc:CommonService) {
     this.showLoadPanel();
@@ -21,12 +23,12 @@ export class DevicesComponent implements OnInit {
         this.loadingVisible = false;
     }, 3000);
   }
-  
+
   showLoadPanel() {
     this.loadingVisible = true;
   }
   dataSource: any;
- 
+
   ngOnInit() {
 
     this.LoadData();
@@ -34,9 +36,9 @@ export class DevicesComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesList().subscribe(resp => 
+  this.svc.GetDevicesList().subscribe(resp =>
     {
-       
+
        this.dataSource = JSON.parse(resp);
       console.log('resp' + resp);
       this.dataGrid.dataSource = this.dataSource;
@@ -44,7 +46,7 @@ LoadData()
 
   },
     error => {
-       
+
     });
 }
 onToolbarPreparing(e) {
@@ -87,6 +89,46 @@ groupChanged(e) {
 
 refreshDataGrid() {
   this.dataGrid.instance.refresh();
+}
+
+RowAdd(e)
+{
+  this.svc.AddDevices(this.deviceobj).subscribe(resp =>
+    {
+
+      console.log('resp' + resp);
+     this.LoadData();
+  },
+    error => {
+
+    });
+}
+
+RowUpdate(e)
+{
+  this.svc.UpdateDevices(this.deviceobj).subscribe(resp =>
+    {
+
+      console.log('resp' + resp);
+     this.LoadData();
+  },
+    error => {
+
+    });
+}
+
+RowDelete(e)
+{
+
+  this.svc.DeleteDevices(this.deviceobj).subscribe(resp =>
+    {
+
+      console.log('resp' + resp);
+     this.LoadData();
+  },
+    error => {
+
+    });
 }
 
 }

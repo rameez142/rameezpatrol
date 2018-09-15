@@ -62,7 +62,7 @@ namespace PatrolWebApp.Controllers
             return ret;
         }
 
-        [HttpPost("adddevices")]
+        [HttpPost("updatedevices")]
         public int PostUpdateDevices(devicecls frm)
         {
             int ret = 0;
