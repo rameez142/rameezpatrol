@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { catchError, retry, map, tap } from 'rxjs/operators';
 @Injectable()
 export class CommonService {
-  private api_url: any = 'http://localhost:56974';
+  private api_url: any = 'http://localhost:50504';
 
   constructor(private http: HttpClient) { }
   public GetDevicesList(){

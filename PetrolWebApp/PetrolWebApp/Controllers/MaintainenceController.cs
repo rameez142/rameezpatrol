@@ -19,12 +19,86 @@ using Npgsql;
 
 namespace PatrolWebApp.Controllers
 {
+    public  class devicecls
+    {
+        public int deviceid { get; set; }
+        public string deviceinumber{ get; set; }
+
+        public int ahwalid { get; set; }
+
+        public string model { get; set; }
+        public int devicetypeid { get; set; }
+
+        public int defective { get; set; }
+
+        public int rental { get; set; }
+
+        public string barcode { get; set; }
+    }
+    
     [Route("api/[controller]")]
     public class MaintainenceController : Controller
     {
 
         // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
         public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+
+
+        [HttpPost("adddevices")]
+        public int PostAddDevices(devicecls frm)
+        {
+            int ret = 0;
+            SqlConnection cont = new SqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cont;
+            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.deviceinumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + ",'" + frm.barcode + "')";
+            ret = cmd.ExecuteNonQuery();
+            cont.Close();
+            cont.Dispose();
+
+
+            return ret;
+        }
+
+        [HttpPost("adddevices")]
+        public int PostUpdateDevices(devicecls frm)
+        {
+            int ret = 0;
+            SqlConnection cont = new SqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cont;
+            cmd.CommandText = "update devices set AhwalID = " + frm.ahwalid + ",devicenumber = '" + frm.deviceinumber + "',model = '" + frm.model + "',devicetypeid='" + frm.devicetypeid + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where deviceid=" + frm.deviceid ;
+            ret = cmd.ExecuteNonQuery();
+            cont.Close();
+            cont.Dispose();
+
+
+            return ret;
+        }
+
+
+        [HttpPost("deldevices")]
+        public int PostDeleteDevices(devicecls frm)
+        {
+            int ret = 0;
+            SqlConnection cont = new SqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cont;
+            cmd.CommandText = "delete devices  where deviceid=" + frm.deviceid;
+            ret = cmd.ExecuteNonQuery();
+            cont.Close();
+            cont.Dispose();
+
+
+            return ret;
+        }
+
 
         [HttpPost("deviceslist")]
         public DataTable PostDevicesList()
@@ -44,6 +118,8 @@ namespace PatrolWebApp.Controllers
             return dt;
         }
 
+       
+
         [HttpPost("deviceslist2")]
         public DataTable PostDevicesList2()
         {
@@ -53,7 +129,8 @@ namespace PatrolWebApp.Controllers
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
+            //            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,'1' as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
