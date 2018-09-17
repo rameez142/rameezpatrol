@@ -29,7 +29,8 @@
             mode="popup"
             [allowUpdating]="false"
             [allowDeleting]="true"
-            [allowAdding]="true">
+            [allowAdding]="true"
+            >
             </dxo-editing>    
                     
                    <dxo-popup
@@ -37,7 +38,14 @@
                     [showTitle]="true"
                     [width]="300"
                     [height]="50"
-                    [position]="{ my: 'top', at: 'top', of: window }">
+                    [position]="{ my: 'top', at: 'top', of: window }"
+                    
+                    >
+                   <div>
+                    <dxi-column dataField="name" caption="Ahwal" ></dxi-column>
+                    <dxi-column dataField="devicenumber"></dxi-column>
+               
+                   </div>
                 </dxo-popup>
             <dxo-selection mode="single"></dxo-selection>
             <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
@@ -61,12 +69,18 @@
                 (onShown)="onShown()">
             </dx-load-panel>
             <dxi-column dataField="name" caption="Ahwal" ></dxi-column>
-            <dxi-column dataField="devicenumber"></dxi-column>
+            <dxi-column dataField="devicenumber" ></dxi-column>
             <dxi-column dataField="type"  [groupIndex]="2"></dxi-column>
             <dxi-column dataField="model"></dxi-column>
             <dxi-column dataField="barcode"></dxi-column>
             <dxi-column dataField="defective"></dxi-column>
             <dxi-column dataField="rental"></dxi-column>
+            <!-- <div *dxTemplate="let cellInfo  of 'editCellTemplate'">
+              <dx-select-box
+            [items]="devicetypesrc"
+            [disabled]="true"
+            ></dx-select-box>
+             </div> -->
               </dx-data-grid>
           </form>
 </div>

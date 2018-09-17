@@ -22,7 +22,7 @@ namespace PatrolWebApp.Controllers
     public  class devicecls
     {
         public int deviceid { get; set; }
-        public string deviceinumber{ get; set; }
+        public string devicenumber{ get; set; }
 
         public int ahwalid { get; set; }
 
@@ -45,15 +45,15 @@ namespace PatrolWebApp.Controllers
 
 
         [HttpPost("adddevices")]
-        public int PostAddDevices(devicecls frm)
+        public int PostAddDevices( [FromBody]devicecls frm)
         {
             int ret = 0;
-            SqlConnection cont = new SqlConnection();
+            NpgsqlConnection cont = new NpgsqlConnection();
             cont.ConnectionString = constr;
             cont.Open();
-            SqlCommand cmd = new SqlCommand();
+            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.deviceinumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + ",'" + frm.barcode + "')";
+            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.devicenumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + ",'" + frm.barcode + "')";
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -63,15 +63,15 @@ namespace PatrolWebApp.Controllers
         }
 
         [HttpPost("updatedevices")]
-        public int PostUpdateDevices(devicecls frm)
+        public int PostUpdateDevices([FromBody] devicecls frm)
         {
             int ret = 0;
-            SqlConnection cont = new SqlConnection();
+            NpgsqlConnection cont = new NpgsqlConnection();
             cont.ConnectionString = constr;
             cont.Open();
-            SqlCommand cmd = new SqlCommand();
+            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "update devices set AhwalID = " + frm.ahwalid + ",devicenumber = '" + frm.deviceinumber + "',model = '" + frm.model + "',devicetypeid='" + frm.devicetypeid + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where deviceid=" + frm.deviceid ;
+            cmd.CommandText = "update devices set AhwalID = " + frm.ahwalid + ",devicenumber = '" + frm.devicenumber + "',model = '" + frm.model + "',devicetypeid='" + frm.devicetypeid + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where deviceid=" + frm.deviceid ;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -82,45 +82,25 @@ namespace PatrolWebApp.Controllers
 
 
         [HttpPost("deldevices")]
-        public int PostDeleteDevices(devicecls frm)
+        public int PostDeleteDevices([FromBody] devicecls frm)
         {
             int ret = 0;
-            SqlConnection cont = new SqlConnection();
+            NpgsqlConnection cont = new NpgsqlConnection();
             cont.ConnectionString = constr;
             cont.Open();
-            SqlCommand cmd = new SqlCommand();
+            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "delete devices  where deviceid=" + frm.deviceid;
+            cmd.CommandText = "delete from devices  where deviceid=" + frm.deviceid;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
-
-
             return ret;
         }
 
 
-        [HttpPost("deviceslist")]
-        public DataTable PostDevicesList()
-        {
-           
-
-            SqlConnection cont = new SqlConnection();
-            cont.ConnectionString = constr;
-            cont.Open();
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from Devices ", cont);
-            da.Fill(dt);
-            cont.Close();
-            cont.Dispose();
-           
-
-            return dt;
-        }
-
        
 
-        [HttpPost("deviceslist2")]
+        [HttpPost("deviceslist")]
         public DataTable PostDevicesList2()
         {
 
@@ -130,7 +110,7 @@ namespace PatrolWebApp.Controllers
             cont.Open();
             DataTable dt = new DataTable();
             //            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,'1' as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,(select dt.name from devicetypes dt where dt.devicetypeid = d.devicetypeid)  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
@@ -149,7 +129,7 @@ namespace PatrolWebApp.Controllers
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model, Devices.Type, Persons.MilNumber, ";
+            string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model,(select dt.name from devicetypes dt where dt.devicetypeid = devices.devicetypeid) as Type, Persons.MilNumber, ";
             Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, DevicesCheckInOut.SavedTime, CheckInOutStates.CheckInOutStateID";
 
             Qry = Qry + "  FROM Ahwal INNER JOIN";
@@ -165,7 +145,7 @@ namespace PatrolWebApp.Controllers
             Qry = Qry + " Ranks ON Persons.RankID = Ranks.RankID";
             Qry = Qry + "  ORDER BY DevicesCheckInOut.SavedTime";
 
-         NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
             dt.Columns.Add("devicecheckinoutid");
             dt.Columns.Add("statename");
             dt.Columns.Add("ahwalid");

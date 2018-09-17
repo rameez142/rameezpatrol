@@ -8,11 +8,11 @@ import {devicecls} from '../maintainence/devices/devicecls';
 
 
 export class CommonService {
-  private api_url: any = 'http://localhost:50504';
+  private api_url: any = 'http://localhost:56974';
 
   constructor(private http: HttpClient) { }
   public GetDevicesList(){
-    return this.http.post(this.api_url + "/api/maintainence/deviceslist2", null, { responseType: 'text' })
+    return this.http.post(this.api_url + "/api/maintainence/deviceslist", null, { responseType: 'text' })
     }
 
     public AddDevices(frm:devicecls){
@@ -24,8 +24,16 @@ export class CommonService {
         }
 
         public DeleteDevices(frm:devicecls){
+          console.log(frm);
           return this.http.post(this.api_url + "/api/maintainence/deldevices", frm, { responseType: 'text' })
           }
+
+          
+        public GetDeviceTypesList(){
+          
+          return this.http.post(this.api_url + "/api/maintainence/devicetypeslist", null, { responseType: 'text' })
+          }
+          
 
     public GetDevicesInventoryList(){
       return this.http.post(this.api_url + "/api/maintainence/devicesinventory", null, { responseType: 'text' })

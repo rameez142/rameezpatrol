@@ -28,7 +28,7 @@ export class DevicesComponent implements OnInit {
     this.loadingVisible = true;
   }
   dataSource: any;
-
+  devicetypesrc:any;
   ngOnInit() {
 
     this.LoadData();
@@ -48,6 +48,18 @@ LoadData()
     error => {
 
     });
+
+    this.svc.GetDeviceTypesList().subscribe(resp =>
+      {
+  
+         this.devicetypesrc = JSON.parse(resp);
+        
+  
+    },
+      error => {
+  
+      });
+    
 }
 onToolbarPreparing(e) {
   e.toolbarOptions.items.unshift({
@@ -106,6 +118,7 @@ RowAdd(e)
 
 RowUpdate(e)
 {
+
   this.svc.UpdateDevices(this.deviceobj).subscribe(resp =>
     {
 
@@ -119,7 +132,15 @@ RowUpdate(e)
 
 RowDelete(e)
 {
-
+  this.deviceobj.ahwalid =  -1;
+  this.deviceobj.barcode =  e.data.barcode;
+  this.deviceobj.defective =  e.data.defective;
+  this.deviceobj.devicenumber =  e.data.devicenumber;
+  this.deviceobj.devicetypeid =  0;
+  this.deviceobj.model =  e.data.model;
+  this.deviceobj.rental = e.data.rental;
+  this.deviceobj.deviceid =  e.data.deviceid;
+  //console.log(this.deviceobj);
   this.svc.DeleteDevices(this.deviceobj).subscribe(resp =>
     {
 

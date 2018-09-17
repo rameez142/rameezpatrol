@@ -1,13 +1,16 @@
 export class devicecls
 {
-  deviceid:any;
-  deviceinumber:any;
-  ahwalid:any;
-  model: any;
+  deviceid:number ;
+  devicenumber:string;
+  ahwalid:number ;
+  model: string;
 
-  devicetypeid:any;
-  defective: any;
-
-  rental:any;
-  barcode: any;
+  devicetypeid:number ;
+  defective: number ;
+ 
+  rental:number ;
+  barcode: string;
 }
+
+
+
