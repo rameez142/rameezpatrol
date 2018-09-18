@@ -1,23 +1,19 @@
 ﻿
-rename database patrolwebapp to PetrolWebApp
-
-drop table Devices;
 CREATE TABLE Devices(
 	ID integer NULL,
 	AhwalID integer NULL,
+	OrgID integer NULL,
 	DeviceNumber nchar(50) NULL,
 	Model nchar(50) NULL,
-	devicetypeid nchar(50) NULL,
+	Type nchar(50) NULL,
 	Defective integer  NULL,
 	Rental integer NULL,
 	BarCode nchar(50) NULL
 ) ;
 
-alter table Devices modify COLUMN devicetypeid TO DeviceID;
-ALTER TABLE Devices
-ALTER COLUMN devicetypeid  TYPE int using devicetypeid::int;
+alter table Devices RENAME COLUMN ID TO DeviceID;
 
-
+DROP TABLE DevicesCheckInOut
 CREATE TABLE DevicesCheckInOut(
 DeviceCheckInOutID integer NULL,
 CheckInOutStateID integer NULL,
@@ -45,9 +41,10 @@ insert into DevicesCheckInOut values (20,10,4,3,1,CURRENT_TIMESTAMP);
 insert into DevicesCheckInOut values (21,10,5,4,1,CURRENT_TIMESTAMP);
 
 select * from devices
-
-insert into Devices values (1,1,'1234','2011',1,0,0,'PAT123456');
-insert into Devices values (4,2,'23545','2012',1,0,0,'PAT23545');
+select * from Persons
+delete from devices;
+insert into Devices values (1,1,'1234','2011',0,0,'PAT123456',1);
+insert into Devices values (4,2,'23545','2012',0,0,'PAT23545',1);
 
 insert into Devices values (2,1,'456','',0,0,'HAND456',2);
 insert into Devices values (5,3,'888','',0,0,'HAND888',2);
@@ -62,13 +59,16 @@ insert into devicetypes values (1,'PATROL','PAT');
 insert into devicetypes values (2,'HANDHELD','HAN');
 insert into devicetypes values (3,'ACCESSORY','ACC');
 select 
-
+delete devices  where deviceid=0
 commit;
 update Devices set devicenumber = '123456';
-insert into Ahwal values ('1','استلام');
+insert into CheckInOutStates values ('10','استلام');
 insert into Ahwal values ('2','شمال');
 insert into Ahwal values ('3','غرب');
 insert into Ranks values ('1','عميد');
+
+ALTER TABLE Devices 
+    alter COLUMN DeviceID  SET IDENTITY;
 
 CREATE TABLE CheckInOutStates(
 	CheckInOutStateID integer NOT NULL,
@@ -84,13 +84,6 @@ CREATE TABLE Ranks(
 	RankID int NOT NULL,
 	Name nchar(50) NOT NULL);
 
-	
-CREATE TABLE devicetypes(
-	devicetypeid int NOT NULL,
-	Name nchar(50) NULL,
-	prefix nchar(3));
-
-select * from devicetypes;
 
 SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.DeviceNumber, Devices.Model, Devices.Type, Persons.MilNumber, 
                          Ranks.Name AS PersonRank, Persons.Name AS PersonName, DevicesCheckInOut.SavedTime, CheckInOutStates.CheckInOutStateID
@@ -145,7 +138,7 @@ SELECT AhwalMappingID, AhwalID, ShiftID, SectorID, DeviceRoleID, CityGroupID,(Se
 HasDevices, '' as Serial,  (Select DeviceNumber From Devices where DeviceID=AhwalMapping.DeviceID) as DeviceNumber, 
 DevicePersonStateID, SunRiseTimeStamp, SunSetTimeStamp, SortingIndex,(Select Mobile From Persons where PersonID=AhwalMapping.PersonID) as PersonMobile,IncidentID,
 LastStateChangeTimeStamp FROM AhwalMapping 
-rename  PatrolWebapp to PatrolWebApp
+
 select * from ranks
 CREATE TABLE Sectors(
 	SectorID int NOT NULL,
@@ -156,11 +149,3 @@ CREATE TABLE Sectors(
 	);
 insert into sectors values(1,1,'عام',null,0);
 insert into sectors values(2,1,'القطاع الأول',1,0);
-
-select * from devices
-select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID 
-
-inner join devicetypes t on t.devicetypeid = d.devicetypeid
-commit;
-
-select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid

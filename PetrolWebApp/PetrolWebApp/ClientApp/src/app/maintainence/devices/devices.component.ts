@@ -5,6 +5,7 @@ import notify from '../../../../node_modules/devextreme/ui/notify';
 import {devicecls} from '..//devices/devicecls';
 
 
+
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
@@ -13,6 +14,8 @@ import {devicecls} from '..//devices/devicecls';
 export class DevicesComponent implements OnInit {
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
+  selahwalid:number = 1;
+  rentalchk:number = 0;
   public deviceobj:devicecls = new devicecls();
 
   constructor(private svc:CommonService) {
@@ -100,22 +103,63 @@ groupChanged(e) {
 
 
 refreshDataGrid() {
-  this.dataGrid.instance.refresh();
+  this.LoadData();
+  //this.dataGrid.instance.refresh();
 }
 
+cleardata()
+{
+  this.deviceobj.ahwalid =  -1;
+  this.deviceobj.barcode = '';
+  this.deviceobj.defective =  -1;
+  this.deviceobj.devicenumber =  '';
+  this.deviceobj.devicetypeid =  -1;
+  this.deviceobj.model =  '';
+  this.deviceobj.rental = -1;
+  this.deviceobj.deviceid =  -1;
+}
+
+PopupInitialize(e)
+{
+  console.log('popupini');
+  this.cleardata();
+}
 RowAdd(e)
 {
+  console.log(this.rentalchk);
+  this.cleardata();
+  this.deviceobj.ahwalid =  this.selahwalid;
+  this.deviceobj.barcode =  e.data.barcode;
+  this.deviceobj.defective =  e.data.defective;
+  this.deviceobj.devicenumber =  e.data.devicenumber;
+  this.deviceobj.devicetypeid =  1;
+  this.deviceobj.model =  e.data.model;
+  this.deviceobj.rental = this.rentalchk;
+
   this.svc.AddDevices(this.deviceobj).subscribe(resp =>
     {
-
       console.log('resp' + resp);
      this.LoadData();
   },
     error => {
 
     });
+    this.cleardata();
+  notify(" Record Added SuccessFully", "success", 600);
 }
 
+checkBoxToggled(e)
+{
+  //console.log(e.value);
+  if( e.value == true)
+  {
+    this.rentalchk = 1;
+  }
+  else{
+    this.rentalchk = 0;
+  }
+  
+}
 RowUpdate(e)
 {
 
@@ -132,15 +176,15 @@ RowUpdate(e)
 
 RowDelete(e)
 {
-  this.deviceobj.ahwalid =  -1;
+  this.cleardata();
+  this.deviceobj.ahwalid =  this.selahwalid;
   this.deviceobj.barcode =  e.data.barcode;
   this.deviceobj.defective =  e.data.defective;
   this.deviceobj.devicenumber =  e.data.devicenumber;
-  this.deviceobj.devicetypeid =  0;
   this.deviceobj.model =  e.data.model;
   this.deviceobj.rental = e.data.rental;
   this.deviceobj.deviceid =  e.data.deviceid;
-  //console.log(this.deviceobj);
+  console.log(e);
   this.svc.DeleteDevices(this.deviceobj).subscribe(resp =>
     {
 

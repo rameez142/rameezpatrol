@@ -53,7 +53,7 @@ namespace PatrolWebApp.Controllers
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.devicenumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + ",'" + frm.barcode + "')";
+            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.devicenumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + "," + frm.rental  + ",'" + frm.barcode + "')";
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
