@@ -41,7 +41,7 @@ namespace PatrolWebApp.Controllers
     {
 
         // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
-        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+        public String constr = "server=localhost;Port=5432;User Id=postgres;password=P@ssw0rd;Database=PatrolWebApp";
 
 
         [HttpPost("adddevices")]
@@ -188,6 +188,23 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             cont.Close();
             cont.Dispose();
 
+
+            return dt;
+        }
+
+        [HttpPost("organizationlist")]
+        public DataTable PostOrganizationList()
+        {
+            NpgsqlConnection cont = new NpgsqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            DataTable dt = new DataTable();
+            String Qry = "SELECT name as value, name as text FROM Ahwal ";
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
+            da.Fill(dt);
+            cont.Close();
+            cont.Dispose();
 
             return dt;
         }

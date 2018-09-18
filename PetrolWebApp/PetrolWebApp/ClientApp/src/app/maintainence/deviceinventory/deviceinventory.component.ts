@@ -12,6 +12,7 @@ export class DeviceinventoryComponent implements OnInit {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
+  orgs:any;
 
   constructor(private svc:CommonService) {
     this.showLoadPanel();
@@ -47,9 +48,12 @@ LoadData()
     error => {
        
     });
+
+    
 }
 
 onToolbarPreparing(e) {
+  //let orgs2: any = " [{    value: 'Org1',    text: 'Grouping by Org3'}, {    value: 'Org2',    text: 'Grouping by Org4'}]";
   e.toolbarOptions.items.unshift({
       location: 'before',
       template: 'Organization'
@@ -58,16 +62,10 @@ onToolbarPreparing(e) {
           widget: 'dxSelectBox',
           options: {
               width: 200,
-              items: [{
-                  value: 'Org1',
-                  text: 'Grouping by Org1'
-              }, {
-                  value: 'Org2',
-                  text: 'Grouping by Org2'
-              }],
+              items: JSON.parse(window.localStorage.getItem("Orgs")),
               displayExpr: 'text',
               valueExpr: 'value',
-              value: 'CustomerStoreState',
+              value: 'الصناعية',
               onValueChanged: this.groupChanged.bind(this)
           }
       }, {
@@ -81,7 +79,8 @@ onToolbarPreparing(e) {
 }
 
 groupChanged(e) {
-  this.dataGrid.instance.clearGrouping();
+this.dataGrid.instance.clearGrouping();
+//console.log('ddd' + e.value);
   this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
 }
 
