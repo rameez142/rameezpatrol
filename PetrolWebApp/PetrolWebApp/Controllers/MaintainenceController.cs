@@ -209,5 +209,22 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             return dt;
         }
 
+        [HttpPost("devicetyplist")]
+        public DataTable Postdevicetyplist()
+        {
+            NpgsqlConnection cont = new NpgsqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            DataTable dt = new DataTable();
+            String Qry = "SELECT id as value, name as text FROM devicetypes ";
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
+            da.Fill(dt);
+            cont.Close();
+            cont.Dispose();
+
+            return dt;
+        }
+
     }
 }

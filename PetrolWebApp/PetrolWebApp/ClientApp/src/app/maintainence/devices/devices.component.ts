@@ -4,8 +4,6 @@ import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular
 import notify from '../../../../node_modules/devextreme/ui/notify';
 import {devicecls} from '..//devices/devicecls';
 
-
-
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
@@ -16,17 +14,23 @@ export class DevicesComponent implements OnInit {
   loadingVisible = false;
   selahwalid:number = 1;
   rentalchk:number = 0;
+  defectchk:number = 0;
+  typesrc:any;
   public deviceobj:devicecls = new devicecls();
 
   constructor(private svc:CommonService) {
     this.showLoadPanel();
+    this.typesrc = JSON.parse(window.localStorage.getItem("devicetypes"));
    }
    onShown() {
     setTimeout(() => {
         this.loadingVisible = false;
     }, 3000);
   }
+  typeselboxtoggled(e)
+  {
 
+  }
   showLoadPanel() {
     this.loadingVisible = true;
   }
@@ -123,6 +127,12 @@ PopupInitialize(e)
 {
   console.log('popupini');
   this.cleardata();
+  this.cleardefaultvalues();
+}
+cleardefaultvalues()
+{
+  this.rentalchk = 0;
+  this.defectchk = 0;
 }
 RowAdd(e)
 {
@@ -145,6 +155,8 @@ RowAdd(e)
 
     });
     this.cleardata();
+    this.cleardefaultvalues();
+
   notify(" Record Added SuccessFully", "success", 600);
 }
 

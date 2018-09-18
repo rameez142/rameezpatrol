@@ -68,7 +68,7 @@
             </dx-load-panel>
             
             <dxi-column dataField="devicenumber" ></dxi-column>
-            <dxi-column dataField="type"  [groupIndex]="1"></dxi-column>
+            <dxi-column dataField="type" editCellTemplate="typecelltemplate" [groupIndex]="1"></dxi-column>
             <dxi-column dataField="model"></dxi-column>
             <dxi-column dataField="barcode"></dxi-column>
             <dxi-column dataField="defective"></dxi-column>
@@ -79,6 +79,14 @@
               (onValueChanged)="checkBoxToggled($event)"
               ></dx-check-box>
               </div>
+              <div *dxTemplate="let data of 'typecelltemplate'">
+                <dx-select-box
+                [items]="typesrc"
+                placeholder="Choose Product"
+                [showClearButton]="true"
+                (onValueChanged)="typeselboxtoggled($event)"
+            ></dx-select-box>
+                </div>
               </dx-data-grid>
           </form>
 </div>

@@ -14,12 +14,18 @@ export class HomeComponent {
     this.svc.GetOrganizationList().subscribe(resp => 
       {
          console.log("Home" + resp)
-         window.localStorage.setItem("Orgs",resp);
-        
+         window.localStorage.setItem("Orgs",resp);   
     },
       error => {
-         
       });
+
+      this.svc.GetDeviceTypes().subscribe(resp => 
+        {
+           console.log("Home" + resp)
+           window.localStorage.setItem("devicetypes",resp);   
+      },
+        error => {
+        });
   }
   
 }

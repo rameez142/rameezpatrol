@@ -48,5 +48,7 @@ export class CommonService {
         return this.http.post(this.api_url + "/api/maintainence/dispatchlist", null, { responseType: 'text' })
         }
 
-
+        public GetDeviceTypes(){
+          return this.http.post(this.api_url + "/api/maintainence/devicetypes", null, { responseType: 'text' })
+          }
 }
