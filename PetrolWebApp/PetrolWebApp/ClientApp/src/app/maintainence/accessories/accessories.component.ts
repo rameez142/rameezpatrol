@@ -1,8 +1,8 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "devextreme-angular"
+import { DxDataGridComponent } from 'devextreme-angular';
 import notify from 'devextreme/ui/notify';
-import {devicecls} from '../devices/devicecls';
+import {accessorycls} from './accessorycls';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class AccessoriesComponent implements OnInit {
   typesrc:any;
   dataSource: any;
   devicetypesrc:any;
-  public deviceobj:devicecls = new devicecls();
+  public deviceobj:accessorycls = new accessorycls();
 
 
   constructor(private svc:CommonService) {
