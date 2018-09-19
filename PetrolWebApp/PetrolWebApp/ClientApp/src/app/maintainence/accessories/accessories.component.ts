@@ -4,21 +4,15 @@ import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular
 import notify from '../../../../node_modules/devextreme/ui/notify';
 import {devicecls} from '..//devices/devicecls';
 
-export class Company {
-  title: string;
-}
-let companies: Company[] = [{
-  "title": "Patrol Cars"
-}];
 
 @Component({
-  selector: 'app-devices',
-  templateUrl: './devices.component.html',
-  styleUrls: ['./devices.component.css']
+  selector: 'app-accessories',
+  templateUrl: './accessories.component.html',
+  styleUrls: ['./accessories.component.css']
 })
+export class AccessoriesComponent implements OnInit {
 
-export class DevicesComponent implements OnInit {
-  @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
+ @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
   selahwalid:number = 1;
   rentalchk:number = 0;
@@ -27,14 +21,12 @@ export class DevicesComponent implements OnInit {
   dataSource: any;
   devicetypesrc:any;
   public deviceobj:devicecls = new devicecls();
-  companies: Company[];
+
 
   constructor(private svc:CommonService) {
-
     this.showLoadPanel();
    // this.typesrc = JSON.parse(window.localStorage.getItem("devicetypes"));
    }
-
 
 
    onShown() {
@@ -221,5 +213,6 @@ RowDelete(e)
 
     });
 }
+
 
 }

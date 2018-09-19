@@ -1,23 +1,17 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular"
+import { DxDataGridComponent } from '../../../../node_modules/devextreme-angular'
 import notify from '../../../../node_modules/devextreme/ui/notify';
-import {devicecls} from '..//devices/devicecls';
-
-export class Company {
-  title: string;
-}
-let companies: Company[] = [{
-  "title": "Patrol Cars"
-}];
+import {devicecls} from '..//employees/devicecls';
 
 @Component({
-  selector: 'app-devices',
-  templateUrl: './devices.component.html',
-  styleUrls: ['./devices.component.css']
+  selector: 'app-employees',
+  templateUrl: './employees.component.html',
+  styleUrls: ['./employees.component.css']
 })
+export class EmployeesComponent implements OnInit {
 
-export class DevicesComponent implements OnInit {
+
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
   selahwalid:number = 1;
@@ -27,7 +21,7 @@ export class DevicesComponent implements OnInit {
   dataSource: any;
   devicetypesrc:any;
   public deviceobj:devicecls = new devicecls();
-  companies: Company[];
+
 
   constructor(private svc:CommonService) {
 

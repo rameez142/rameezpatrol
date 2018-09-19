@@ -14,7 +14,14 @@ import { DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemp
 import { CommonService } from './services/common.service';
 import { DeviceinventoryComponent } from './maintainence/deviceinventory/deviceinventory.component';
 import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
-
+import { MaintainenceComponent } from './maintainence/maintainence/maintainence.component';
+import { PatrolcarsComponent } from './maintainence/patrolcars/patrolcars.component';
+import { HandheldsComponent } from './maintainence/handhelds/handhelds.component';
+import { AccessoriesComponent } from './maintainence/accessories/accessories.component';
+import {TabModule} from '../../node_modules/angular-tabs-component';
+import { HandheldinventoryComponent } from './maintainence/deviceinventory/handheldinventory/handheldinventory.component';
+import { AccessoryinventoryComponent } from './maintainence/deviceinventory/accessoryinventory/accessoryinventory.component';
+import { EmployeesComponent } from './dispatcher/employees/employees.component';
 
 
 @NgModule({
@@ -27,11 +34,18 @@ import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
     DevicesComponent,
     DeviceinventoryComponent,
     DispatchComponent,
-    DispatchComponent
+    DispatchComponent,
+    MaintainenceComponent,
+    PatrolcarsComponent,
+    HandheldsComponent,
+    AccessoriesComponent,
+    HandheldinventoryComponent,
+    AccessoryinventoryComponent,
+    EmployeesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
+    HttpClientModule,TabModule,
     FormsModule,DxSelectBoxModule,
     DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule,
     RouterModule.forRoot([
@@ -40,6 +54,12 @@ import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'devices', component: DevicesComponent },
       { path: 'deviceinventory', component: DeviceinventoryComponent },
+      { path: 'hadheld', component: HandheldsComponent },
+      { path: 'accessory', component: AccessoriesComponent },
+      { path: 'handheldinvent', component: HandheldinventoryComponent },
+      { path: 'accessoryinvent', component: AccessoryinventoryComponent },
+      { path: 'employee', component: EmployeesComponent },
+
       {path: 'dispatch', component: DispatchComponent}
     ])
   ],

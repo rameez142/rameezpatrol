@@ -41,7 +41,7 @@ namespace PatrolWebApp.Controllers
     {
 
         // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
-        public String constr = "server=localhost;Port=5432;User Id=postgres;password=P@ssw0rd;Database=PatrolWebApp";
+        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
 
 
         [HttpPost("adddevices")]
@@ -111,6 +111,7 @@ namespace PatrolWebApp.Controllers
             DataTable dt = new DataTable();
             //            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
             NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,(select dt.name from devicetypes dt where dt.devicetypeid = d.devicetypeid)  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
+           // NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,'1'  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
             da.Fill(dt);
             cont.Close();
             cont.Dispose();

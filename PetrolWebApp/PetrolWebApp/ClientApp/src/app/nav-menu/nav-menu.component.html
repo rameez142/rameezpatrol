@@ -21,20 +21,47 @@
                     <a  (click)='collapse()'>
                         <span class='glyphicon glyphicon-education'></span> Maintainence
                     </a>
-                    <ul>      
+                  </li>
+                    <ul>
                             <li >
                                     <a  [routerLink]='["/deviceinventory"]'>
                                       Device Inventory
                                     </a>
                             </li>
-                            <li> <a [routerLink]='["/devices"]'>
-                                Devices
-                            </a></li>
+
+
                         </ul>
-                </li>
+                        <li  [routerLinkActive]='["link-active"]'>
+                            <a [routerLink]='["/handheldinvent"]'>
+                              Hand Helds Inventory
+                          </a></li>
+                          <li  [routerLinkActive]='["link-active"]'>
+                            <a [routerLink]='["/accessoryinvent"]'>
+                            Accessories Inventory
+                          </a></li>
+
+                        <li  [routerLinkActive]='["link-active"]'>
+                          <a [routerLink]='["/devices"]'>
+                            Patrol Cars
+                        </a></li>
+                        <li  [routerLinkActive]='["link-active"]'>
+                          <a [routerLink]='["/handheld"]'>
+                            Hand Helds
+                        </a></li>
+                        <li  [routerLinkActive]='["link-active"]'>
+                          <a [routerLink]='["/accessory"]'>
+                          Accessories
+                        </a></li>
+
+
                 <li [routerLinkActive]='["link-active"]'>
                     <a [routerLink]='["/dispatch"]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-th-list'></span> Dispatcher
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]'>
+                    <a [routerLink]='["/employee"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-th-list'></span> Persons
                     </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
