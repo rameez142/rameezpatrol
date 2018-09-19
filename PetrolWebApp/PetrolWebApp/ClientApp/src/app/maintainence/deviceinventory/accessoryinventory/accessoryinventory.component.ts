@@ -36,7 +36,7 @@ export class AccessoryinventoryComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesInventoryList().subscribe(resp =>
+  this.svc.GetAccessoryInventoryList().subscribe(resp =>
     {
 
        this.dataSource = JSON.parse(resp);
@@ -53,7 +53,7 @@ LoadData()
 }
 
 onToolbarPreparing(e) {
-  //let orgs2: any = " [{    value: 'Org1',    text: 'Grouping by Org3'}, {    value: 'Org2',    text: 'Grouping by Org4'}]";
+
   e.toolbarOptions.items.unshift({
       location: 'before',
       template: 'Organization'

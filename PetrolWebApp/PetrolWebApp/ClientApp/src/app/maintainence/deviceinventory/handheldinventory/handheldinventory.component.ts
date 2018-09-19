@@ -35,7 +35,7 @@ export class HandheldinventoryComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesInventoryList().subscribe(resp =>
+  this.svc.GetHandHeldsInventoryList().subscribe(resp =>
     {
 
        this.dataSource = JSON.parse(resp);
