@@ -1,15 +1,12 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular"
-import notify from '../../../../node_modules/devextreme/ui/notify';
-import {devicecls} from '..//devices/devicecls';
+import { DxDataGridComponent } from "devextreme-angular"
+import notify from 'devextreme/ui/notify';
+import {devicecls} from './devicecls';
 
 export class Company {
   title: string;
 }
-let companies: Company[] = [{
-  "title": "Patrol Cars"
-}];
 
 @Component({
   selector: 'app-devices',

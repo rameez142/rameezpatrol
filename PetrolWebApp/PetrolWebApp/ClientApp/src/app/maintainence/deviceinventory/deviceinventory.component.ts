@@ -1,7 +1,7 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular"
-import notify from '../../../../node_modules/devextreme/ui/notify';
+import { DxDataGridComponent } from "devextreme-angular"
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-deviceinventory',
@@ -23,12 +23,12 @@ export class DeviceinventoryComponent implements OnInit {
         this.loadingVisible = false;
     }, 3000);
   }
-  
+
   showLoadPanel() {
     this.loadingVisible = true;
   }
   dataSource: any;
- 
+
   ngOnInit() {
 
     this.LoadData();
@@ -36,9 +36,9 @@ export class DeviceinventoryComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesInventoryList().subscribe(resp => 
+  this.svc.GetDevicesInventoryList().subscribe(resp =>
     {
-       
+
        this.dataSource = JSON.parse(resp);
       console.log('resp' + resp);
       this.dataGrid.dataSource = this.dataSource;
@@ -46,10 +46,10 @@ LoadData()
 
   },
     error => {
-       
+
     });
 
-    
+
 }
 
 onToolbarPreparing(e) {

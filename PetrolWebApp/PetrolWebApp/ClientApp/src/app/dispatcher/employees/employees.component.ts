@@ -1,8 +1,8 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from '../../../../node_modules/devextreme-angular'
-import notify from '../../../../node_modules/devextreme/ui/notify';
-import {devicecls} from '..//employees/devicecls';
+import { DxDataGridComponent } from 'devextreme-angular'
+import notify from 'devextreme/ui/notify';
+import {personcls} from '..//employees/personcls';
 
 @Component({
   selector: 'app-employees',
@@ -20,7 +20,7 @@ export class EmployeesComponent implements OnInit {
   typesrc:any;
   dataSource: any;
   devicetypesrc:any;
-  public deviceobj:devicecls = new devicecls();
+  public deviceobj:personcls = new personcls();
 
 
   constructor(private svc:CommonService) {
@@ -51,7 +51,7 @@ export class EmployeesComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesList().subscribe(resp =>
+  this.svc.GetpersonList().subscribe(resp =>
     {
 
        this.dataSource = JSON.parse(resp);
@@ -154,7 +154,7 @@ RowAdd(e)
   this.deviceobj.model =  e.data.model;
   this.deviceobj.rental = this.rentalchk;
 
-  this.svc.AddDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Addpersons(this.deviceobj).subscribe(resp =>
     {
       console.log('resp' + resp);
      this.LoadData();
@@ -183,7 +183,7 @@ checkBoxToggled(e)
 RowUpdate(e)
 {
 
-  this.svc.UpdateDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Updatepersons(this.deviceobj).subscribe(resp =>
     {
 
       console.log('resp' + resp);
@@ -205,7 +205,7 @@ RowDelete(e)
   this.deviceobj.rental = e.data.rental;
   this.deviceobj.deviceid =  e.data.deviceid;
   console.log(e);
-  this.svc.DeleteDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Deletepersons(this.deviceobj).subscribe(resp =>
     {
 
       console.log('resp' + resp);

@@ -1,8 +1,8 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "../../../../node_modules/devextreme-angular"
-import notify from '../../../../node_modules/devextreme/ui/notify';
-import {devicecls} from '..//devices/devicecls';
+import { DxDataGridComponent } from "devextreme-angular"
+import notify from 'devextreme/ui/notify';
+import {devicecls} from '../devices/devicecls';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class AccessoriesComponent implements OnInit {
 
 LoadData()
 {
-  this.svc.GetDevicesList().subscribe(resp =>
+  this.svc.GetaccessoryList().subscribe(resp =>
     {
 
        this.dataSource = JSON.parse(resp);
@@ -152,7 +152,7 @@ RowAdd(e)
   this.deviceobj.model =  e.data.model;
   this.deviceobj.rental = this.rentalchk;
 
-  this.svc.AddDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Addaccessory(this.deviceobj).subscribe(resp =>
     {
       console.log('resp' + resp);
      this.LoadData();
@@ -181,7 +181,7 @@ checkBoxToggled(e)
 RowUpdate(e)
 {
 
-  this.svc.UpdateDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Updateaccessory(this.deviceobj).subscribe(resp =>
     {
 
       console.log('resp' + resp);
@@ -203,7 +203,7 @@ RowDelete(e)
   this.deviceobj.rental = e.data.rental;
   this.deviceobj.deviceid =  e.data.deviceid;
   console.log(e);
-  this.svc.DeleteDevices(this.deviceobj).subscribe(resp =>
+  this.svc.Deleteaccessory(this.deviceobj).subscribe(resp =>
     {
 
       console.log('resp' + resp);

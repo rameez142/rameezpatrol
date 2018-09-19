@@ -1,4 +1,4 @@
-export class devicecls
+export class personcls
 {
   deviceid:number ;
   devicenumber:string;
@@ -7,7 +7,7 @@ export class devicecls
 
   devicetypeid:number ;
   defective: number ;
- 
+
   rental:number ;
   barcode: string;
 }

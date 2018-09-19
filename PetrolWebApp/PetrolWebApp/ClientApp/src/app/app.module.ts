@@ -10,15 +10,14 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { DevicesComponent } from './maintainence/devices/devices.component';
-import { DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule } from "../../node_modules/devextreme-angular";
+import { DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule } from "devextreme-angular";
 import { CommonService } from './services/common.service';
 import { DeviceinventoryComponent } from './maintainence/deviceinventory/deviceinventory.component';
 import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
-import { MaintainenceComponent } from './maintainence/maintainence/maintainence.component';
 import { PatrolcarsComponent } from './maintainence/patrolcars/patrolcars.component';
 import { HandheldsComponent } from './maintainence/handhelds/handhelds.component';
 import { AccessoriesComponent } from './maintainence/accessories/accessories.component';
-import {TabModule} from '../../node_modules/angular-tabs-component';
+import {TabModule} from 'angular-tabs-component';
 import { HandheldinventoryComponent } from './maintainence/deviceinventory/handheldinventory/handheldinventory.component';
 import { AccessoryinventoryComponent } from './maintainence/deviceinventory/accessoryinventory/accessoryinventory.component';
 import { EmployeesComponent } from './dispatcher/employees/employees.component';
@@ -35,7 +34,6 @@ import { EmployeesComponent } from './dispatcher/employees/employees.component';
     DeviceinventoryComponent,
     DispatchComponent,
     DispatchComponent,
-    MaintainenceComponent,
     PatrolcarsComponent,
     HandheldsComponent,
     AccessoriesComponent,
