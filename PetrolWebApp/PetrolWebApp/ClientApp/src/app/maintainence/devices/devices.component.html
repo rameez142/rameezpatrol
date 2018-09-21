@@ -66,13 +66,11 @@
               <dxo-selection mode="single"></dxo-selection>
               <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
 
-              <dxo-header-filter
-              [visible]="true"></dxo-header-filter>
+              
               <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
               <dxo-state-storing [enabled]="true" type="localStorage" storageKey="storage"></dxo-state-storing>
               <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
               <dxo-filter-row [visible]="true"></dxo-filter-row>
-              <dxo-header-filter [visible]="true"></dxo-header-filter>
               <dx-load-panel
                   #loadPanel
                   shadingColor="rgba(0,0,0,0.4)"
@@ -85,9 +83,11 @@
                   (onShown)="onShown()">
               </dx-load-panel>
 
-              <dxi-column dataField="devicenumber" ></dxi-column>
-              <dxi-column dataField="type" editCellTemplate="typecelltemplate" [groupIndex]="1"></dxi-column>
-              <dxi-column dataField="model"></dxi-column>
+              <dxi-column dataField="devicenumber" headerCellTemplate="header1" ></dxi-column>
+              <dxi-column dataField="model">
+                <dxo-filter-row 
+            filterRowTemplate="header1"></dxo-filter-row >
+              </dxi-column>
               <dxi-column dataField="barcode"></dxi-column>
               <dxi-column dataField="defective"></dxi-column>
               <dxi-column dataField="rental" editCellTemplate="dataCellTemplate"></dxi-column>
@@ -99,6 +99,15 @@
                 </div>
                 <div *dxTemplate="let data of 'typecelltemplate'">
 
+                  </div>
+                  <div *dxTemplate="let data of 'header1'">
+                    <dx-select-box
+                [dataSource]="products"
+                displayExpr="Name"
+                valueExpr="ID"
+                [value]="products[0].ID"
+                (onValueChanged)="selectStatus($event)"
+            ></dx-select-box>
                   </div>
                 </dx-data-grid>
               <!-- </div>

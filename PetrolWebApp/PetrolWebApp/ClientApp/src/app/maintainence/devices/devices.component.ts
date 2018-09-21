@@ -3,11 +3,21 @@ import { CommonService } from '../../services/common.service';
 import { DxDataGridComponent } from "devextreme-angular"
 import notify from 'devextreme/ui/notify';
 import {devicecls} from './devicecls';
+import ArrayStore from 'devextreme/data/array_store';
 
 export class Company {
   title: string;
 }
-
+export class Product {
+  ID: number;
+  Name: string;
+  Price: number;
+  Current_Inventory: number;
+  Backorder: number;
+  Manufacturing: number;
+  Category: string;
+  ImageSrc: string;
+}
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
@@ -15,6 +25,8 @@ export class Company {
 })
 
 export class DevicesComponent implements OnInit {
+  data: any;
+
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
   selahwalid:number = 1;
@@ -25,9 +37,30 @@ export class DevicesComponent implements OnInit {
   devicetypesrc:any;
   public deviceobj:devicecls = new devicecls();
   companies: Company[];
-
+   products: Product[] = [{
+    "ID": 1,
+    "Name": "HD Video Player",
+    "Price": 330,
+    "Current_Inventory": 225,
+    "Backorder": 0,
+    "Manufacturing": 10,
+    "Category": "Video Players",
+    "ImageSrc": "images/products/1-small.png"
+}, {
+    "ID": 2,
+    "Name": "SuperHD Player",
+    "Price": 400,
+    "Current_Inventory": 150,
+    "Backorder": 0,
+    "Manufacturing": 25,
+    "Category": "Video Players",
+    "ImageSrc": "images/products/2-small.png"
+}];
   constructor(private svc:CommonService) {
-
+    this.data = new ArrayStore({
+      data: this.products,
+      key: "ID"
+  });
     this.showLoadPanel();
    // this.typesrc = JSON.parse(window.localStorage.getItem("devicetypes"));
    }
@@ -218,5 +251,11 @@ RowDelete(e)
 
     });
 }
-
+selectStatus(data) {
+  if (data.value === 'All') {
+      this.dataGrid.instance.clearFilter();
+  } else {
+      this.dataGrid.instance.filter(['rental', '=', data.value]);
+  }
+}
 }
