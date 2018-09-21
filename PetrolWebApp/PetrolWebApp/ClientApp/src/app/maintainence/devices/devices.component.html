@@ -35,12 +35,14 @@
                   (onRowUpdated)="RowUpdate($event)"
                   (onToolbarPreparing)="onToolbarPreparing($event)"
                   (onEditorPreparing)="PopupInitialize($event)"
+                  (onContentReady)="ContentReady2($event)"
+                  (onCellPrepared) = "Cellprepare($event)"
                keyexpr="deviceid"
                 >
-                  <dxo-paging [pageSize]="1"></dxo-paging>
+                  <dxo-paging [pageSize]="10"></dxo-paging>
                   <dxo-pager
                   [showPageSizeSelector]="true"
-                  [allowedPageSizes]="[1, 50, 100]"
+                  [allowedPageSizes]="[10, 50, 100]"
                   [showInfo]="true">
               </dxo-pager>
 
@@ -66,9 +68,8 @@
               <dxo-selection mode="single"></dxo-selection>
               <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
 
-              
+
               <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
-              <dxo-state-storing [enabled]="true" type="localStorage" storageKey="storage"></dxo-state-storing>
               <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dx-load-panel
@@ -83,9 +84,9 @@
                   (onShown)="onShown()">
               </dx-load-panel>
 
-              <dxi-column dataField="devicenumber" headerCellTemplate="header1" ></dxi-column>
-              <dxi-column dataField="model">
-                <dxo-filter-row 
+              <dxi-column dataField="devicenumber" [allowFiltering]="false" ></dxi-column>
+               <dxi-column dataField="model">
+                <dxo-filter-row
             filterRowTemplate="header1"></dxo-filter-row >
               </dxi-column>
               <dxi-column dataField="barcode"></dxi-column>
@@ -101,13 +102,13 @@
 
                   </div>
                   <div *dxTemplate="let data of 'header1'">
-                    <dx-select-box
+                    <!-- <dx-select-box
                 [dataSource]="products"
                 displayExpr="Name"
                 valueExpr="ID"
                 [value]="products[0].ID"
                 (onValueChanged)="selectStatus($event)"
-            ></dx-select-box>
+            ></dx-select-box> -->
                   </div>
                 </dx-data-grid>
               <!-- </div>

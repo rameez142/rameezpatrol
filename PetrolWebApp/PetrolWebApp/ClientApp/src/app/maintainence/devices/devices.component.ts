@@ -1,9 +1,11 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { DxDataGridComponent } from "devextreme-angular"
+import { DxDataGridComponent } from 'devextreme-angular'
 import notify from 'devextreme/ui/notify';
 import {devicecls} from './devicecls';
 import ArrayStore from 'devextreme/data/array_store';
+import SelectBox from 'devextreme/ui/select_box';
+let datgrid2:any;
 
 export class Company {
   title: string;
@@ -24,10 +26,12 @@ export class Product {
   styleUrls: ['./devices.component.css']
 })
 
+
+
 export class DevicesComponent implements OnInit {
+  @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   data: any;
 
-  @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   loadingVisible = false;
   selahwalid:number = 1;
   rentalchk:number = 0;
@@ -37,35 +41,78 @@ export class DevicesComponent implements OnInit {
   devicetypesrc:any;
   public deviceobj:devicecls = new devicecls();
   companies: Company[];
+  datgrid2 = this.dataGrid;
    products: Product[] = [{
-    "ID": 1,
-    "Name": "HD Video Player",
-    "Price": 330,
-    "Current_Inventory": 225,
-    "Backorder": 0,
-    "Manufacturing": 10,
-    "Category": "Video Players",
-    "ImageSrc": "images/products/1-small.png"
+    'ID': 1,
+    'Name': '1234',
+    'Price': 330,
+    'Current_Inventory': 225,
+    'Backorder': 0,
+    'Manufacturing': 10,
+    'Category': 'Video Players',
+    'ImageSrc': 'images/products/1-small.png'
 }, {
-    "ID": 2,
-    "Name": "SuperHD Player",
-    "Price": 400,
-    "Current_Inventory": 150,
-    "Backorder": 0,
-    "Manufacturing": 25,
-    "Category": "Video Players",
-    "ImageSrc": "images/products/2-small.png"
+    'ID': 2,
+    'Name': '2345',
+    'Price': 400,
+    'Current_Inventory': 150,
+    'Backorder': 0,
+    'Manufacturing': 25,
+    'Category': 'Video Players',
+    'ImageSrc': 'images/products/2-small.png'
 }];
+selectBox:any;
+
   constructor(private svc:CommonService) {
-    this.data = new ArrayStore({
-      data: this.products,
-      key: "ID"
-  });
+  //   this.data = new ArrayStore({
+  //     data: this.products,
+  //     key: 'ID'
+  // });
     this.showLoadPanel();
-   // this.typesrc = JSON.parse(window.localStorage.getItem("devicetypes"));
-   }
+   // this.typesrc = JSON.parse(window.localStorage.getItem('devicetypes'));
 
+  }
+  onValueChangeOfSelectbox(e) {
+//console.log(e);
+    if (e.name === 'selectedItem' ) {
+     // this.selectStatus(e.value.Name);
+      //console.log(this.dataGrid);
+      datgrid2.instance.filter(['devicenumber', '=', e.value.Name]);
+    }
 
+  }
+
+  ContentReady2(e) {
+    if (!e.component.__isInitialized) {
+        e.component.__isInitialized = true;
+        // this.selectBox = new SelectBox(e.element.querySelector('.dx-datagrid-filter-row .dx-command-select'),
+        //  {
+        //   dataSource: this.products,
+        //   valueExpr: 'ID',
+        //   displayExpr: 'name',
+        //   onOptionChanged: this.onValueChangeOfSelectbox
+        // });
+    }
+  }
+  Cellprepare(e)
+  {
+    if (e.rowType === 'filter') {
+     /// alert(e.columnIndex);
+      if(e.columnIndex === 0)
+      {
+     //  alert(e.columnIndex);
+
+       this.selectBox = new SelectBox(e.cellElement,
+         {
+          dataSource: this.products,
+          valueExpr: 'Name',
+          displayExpr: 'Name',
+          onOptionChanged:this.onValueChangeOfSelectbox
+        });
+       // e.cellElement.appendChild(this.selectBox);
+      }
+      }
+    }
 
    onShown() {
     setTimeout(() => {
@@ -201,13 +248,13 @@ RowAdd(e)
     this.cleardata();
     this.cleardefaultvalues();
 
-  notify(" Record Added SuccessFully", "success", 600);
+  notify(' Record Added SuccessFully', 'success', 600);
 }
 
 checkBoxToggled(e)
 {
   //console.log(e.value);
-  if( e.value == true)
+  if( e.value === true)
   {
     this.rentalchk = 1;
   }
