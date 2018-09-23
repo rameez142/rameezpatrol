@@ -8,7 +8,7 @@ import {devicecls} from '../maintainence/devices/devicecls';
 
 
 export class CommonService {
-  private api_url: any = 'http://localhost:50504';
+  private api_url: any = 'http://localhost:56974';
 
   constructor(private http: HttpClient) { }
   public GetDevicesList(){
