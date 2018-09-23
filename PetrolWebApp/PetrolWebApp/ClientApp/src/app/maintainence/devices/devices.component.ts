@@ -231,7 +231,7 @@ RowAdd(e)
   this.cleardata();
   this.deviceobj.ahwalid =  this.selahwalid;
   this.deviceobj.barcode =  e.data.barcode;
-  this.deviceobj.defective =  e.data.defective;
+  this.deviceobj.defective =  this.defectchk;
   this.deviceobj.devicenumber =  e.data.devicenumber;
   this.deviceobj.devicetypeid =  1;
   this.deviceobj.model =  e.data.model;
@@ -263,6 +263,20 @@ checkBoxToggled(e)
   }
 
 }
+
+chkdeftoggle(e)
+{
+  //console.log(e.value);
+  if( e.value === true)
+  {
+    this.defectchk = 1;
+  }
+  else{
+    this.defectchk = 0;
+  }
+
+}
+
 RowUpdate(e)
 {
 
