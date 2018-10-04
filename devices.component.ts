@@ -5,7 +5,21 @@ import notify from 'devextreme/ui/notify';
 import {devicecls} from './devicecls';
 import ArrayStore from 'devextreme/data/array_store';
 import SelectBox from 'devextreme/ui/select_box';
+let datgrid2:any;
 
+export class Company {
+  title: string;
+}
+export class Product {
+  ID: number;
+  Name: string;
+  Price: number;
+  Current_Inventory: number;
+  Backorder: number;
+  Manufacturing: number;
+  Category: string;
+  ImageSrc: string;
+}
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
@@ -26,25 +40,106 @@ export class DevicesComponent implements OnInit {
   dataSource: any;
   devicetypesrc:any;
   public deviceobj:devicecls = new devicecls();
-
-  
-  
-
+  companies: Company[];
+  //datgrid2 = new DxDataGridComponent(dataGrid);
+  datgrid2 = this.dataGrid;
+   products: Product[] = [
+    {
+      'ID': 3,
+      'Name': '',
+      'Price': 330,
+      'Current_Inventory': 225,
+      'Backorder': 0,
+      'Manufacturing': 10,
+      'Category': 'Video Players',
+      'ImageSrc': 'images/products/1-small.png'
+  },{
+    'ID': 1,
+    'Name': 'PAT23545',
+    'Price': 330,
+    'Current_Inventory': 225,
+    'Backorder': 0,
+    'Manufacturing': 10,
+    'Category': 'Video Players',
+    'ImageSrc': 'images/products/1-small.png'
+}, {
+    'ID': 2,
+    'Name': 'PAT456',
+    'Price': 400,
+    'Current_Inventory': 150,
+    'Backorder': 0,
+    'Manufacturing': 25,
+    'Category': 'Video Players',
+    'ImageSrc': 'images/products/2-small.png'
+}];
+selectBox:any;
 
   constructor(private svc:CommonService) {
- 
+  //   this.data = new ArrayStore({
+  //     data: this.products,
+  //     key: 'ID'
+  // });
     this.showLoadPanel();
-  
+   // this.typesrc = JSON.parse(window.localStorage.getItem('devicetypes'));
+
   }
-  
+  onValueChangeOfSelectbox(e) {
+//console.log(e.name);
+
+
+    if (e.name === 'selectedItem' ) {
+      console.log(e.value.Name);
+     // console.log(e);
+     // console.log(e.component);
+      //console.log(this.dataGrid);
+     // this.LoadData();
+     // console.log(this);
+//this.LoadData();
+if (e.value.Name == "") {
+  this.dataGrid.instance.clearFilter();
+} else {
+  this.dataGrid.instance.filter(['devicenumber', 'contains', e.value.Name]);
+}
+     // this.dataGrid.instance.filter(['devicenumber', '=', e.value.Name]);
+      
+    // this.dataGrid.instance.clearFilter();
+    }
+
+  }
 
   ContentReady2(e) {
     if (!e.component.__isInitialized) {
         e.component.__isInitialized = true;
-     
+        // this.selectBox = new SelectBox(e.element.querySelector('.dx-datagrid-filter-row .dx-command-select'),
+        //  {
+        //   dataSource: this.products,
+        //   valueExpr: 'ID',
+        //   displayExpr: 'name',
+        //   onOptionChanged: this.onValueChangeOfSelectbox
+        // });
     }
   }
- 
+  Cellprepare(e)
+  {
+    if (e.rowType === 'filter') {
+     /// alert(e.columnIndex);
+      if(e.columnIndex === 0)
+      {
+     //  alert(e.columnIndex);
+
+       this.selectBox = new SelectBox(e.cellElement,
+         {
+          dataSource: this.products,
+          valueExpr: 'Name',
+          displayExpr: 'Name',
+          onOptionChanged:this.onValueChangeOfSelectbox.bind(this)
+          ,
+
+        });
+       // e.cellElement.appendChild(this.selectBox);
+      }
+      }
+    }
 
    onShown() {
     setTimeout(() => {
@@ -78,6 +173,17 @@ LoadData()
     error => {
 
     });
+
+    /*this.svc.GetDeviceTypesList().subscribe(resp =>
+      {
+
+         this.devicetypesrc = JSON.parse(resp);
+
+
+    },
+      error => {
+
+      });*/
 
 }
 onToolbarPreparing(e) {
@@ -120,7 +226,7 @@ groupChanged(e) {
 
 refreshDataGrid() {
   this.LoadData();
-  
+  //this.dataGrid.instance.refresh();
 }
 
 cleardata()
@@ -233,5 +339,11 @@ RowDelete(e)
 
     });
 }
-
+selectStatus(data) {
+  if (data.value === 'All') {
+      this.dataGrid.instance.clearFilter();
+  } else {
+      this.dataGrid.instance.filter(['rental', '=', data.value]);
+  }
+}
 }

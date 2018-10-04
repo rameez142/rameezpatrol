@@ -7,22 +7,7 @@
             <h3><i class="fa fa-handshake-o fa-lg page-caption" aria-hidden="true"></i> PatrolCars</h3>
           </header>
 
-          <!-- <dx-tab-panel
-              #tabPanel
-              [height]="260"
-              [selectedIndex]="0"
-              [loop]="false"
-              [animationEnabled]="true"
-              [swipeEnabled]="true"
-              [dataSource]="companies"
-          >
-
-          <div *dxTemplate="let company of 'title'">
-            <span>{{ company.title }}</span>
-          </div>
-
-          <div *dxTemplate="let company of 'item'">
-              <div class="tabpanel-item">-->
+         
                   <dx-data-grid
                   id="gridContainer"
                   [dataSource]="dataSource"
@@ -36,7 +21,7 @@
                   (onToolbarPreparing)="onToolbarPreparing($event)"
                   (onEditorPreparing)="PopupInitialize($event)"
                   (onContentReady)="ContentReady2($event)"
-                  (onCellPrepared) = "Cellprepare($event)"
+                 
                keyexpr="deviceid"
                 >
                   <dxo-paging [pageSize]="10"></dxo-paging>
@@ -66,10 +51,11 @@
               </dxo-editing>
 
               <dxo-selection mode="single"></dxo-selection>
-              <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
+              <dxo-export [enabled]="true" fileName="Patrol Cars"></dxo-export>
               <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
-              <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
-              <dxo-filter-row [visible]="true"></dxo-filter-row>
+           
+              <dxo-filter-row  [visible]="true"></dxo-filter-row>
+             
               <dx-load-panel
                   #loadPanel
                   shadingColor="rgba(0,0,0,0.4)"
@@ -82,13 +68,12 @@
                   (onShown)="onShown()">
               </dx-load-panel>
 
-              <dxi-column dataField="devicenumber" [allowFiltering]="false" ></dxi-column>
-               <dxi-column dataField="model">
-                <dxo-filter-row
-            filterRowTemplate="header1"></dxo-filter-row >
-              </dxi-column>
-              <dxi-column dataField="barcode" ></dxi-column>
-             
+              <dxi-column dataField="devicenumber"></dxi-column>
+
+               <dxi-column dataField="model"></dxi-column>
+               
+              <dxi-column dataField="barcode"></dxi-column>
+         
               <dxi-column dataField="defective" editCellTemplate="defCellTemplate"></dxi-column>
               <div *dxTemplate="let data of 'defCellTemplate'">
                 <dx-check-box
@@ -96,33 +81,17 @@
                 (onValueChanged)="chkdeftoggle($event)"
                 ></dx-check-box>
                 </div>
-              <dxi-column dataField="rental" editCellTemplate="dataCellTemplate"></dxi-column>
+              <dxi-column dataField="rental"  editCellTemplate="dataCellTemplate"></dxi-column>
               <div *dxTemplate="let data of 'dataCellTemplate'">
                 <dx-check-box
                 [value]="0"
                 (onValueChanged)="checkBoxToggled($event)"
                 ></dx-check-box>
                 </div>
-                <div *dxTemplate="let data of 'typecelltemplate'">
-
-                  </div>
-                  <div *dxTemplate="let data of 'header1'">
-                    <!-- <dx-select-box
-                [dataSource]="products"
-                displayExpr="Name"
-                valueExpr="ID"
-                [value]="products[0].ID"
-                (onValueChanged)="selectStatus($event)"
-            ></dx-select-box> -->
-                  </div>
+                
+                
                 </dx-data-grid>
-              <!-- </div>
-
-                    </div> -->
-
-                      <!-- </dx-tab-panel> -->
-
-
+             
                     </form>
 
           </div>
