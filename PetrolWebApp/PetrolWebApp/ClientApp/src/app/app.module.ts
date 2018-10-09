@@ -9,8 +9,8 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { DevicesComponent } from './maintainence/devices/devices.component';
-import { DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule } from "devextreme-angular";
+
+import { DxContextMenuModule,DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule } from "devextreme-angular";
 import { CommonService } from './services/common.service';
 import { DeviceinventoryComponent } from './maintainence/deviceinventory/deviceinventory.component';
 import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
@@ -23,6 +23,7 @@ import { AccessoryinventoryComponent } from './maintainence/deviceinventory/acce
 import { EmployeesComponent } from './dispatcher/employees/employees.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,6 @@ import { EmployeesComponent } from './dispatcher/employees/employees.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    DevicesComponent,
     DeviceinventoryComponent,
     DispatchComponent,
     DispatchComponent,
@@ -44,13 +44,13 @@ import { EmployeesComponent } from './dispatcher/employees/employees.component';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    FormsModule,DxSelectBoxModule,
+    FormsModule,DxSelectBoxModule,DxContextMenuModule,
     DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'devices', component: DevicesComponent },
+      { path: 'patrolcars', component: PatrolcarsComponent },
       { path: 'deviceinventory', component: DeviceinventoryComponent },
       { path: 'hadheld', component: HandheldsComponent },
       { path: 'accessory', component: AccessoriesComponent },

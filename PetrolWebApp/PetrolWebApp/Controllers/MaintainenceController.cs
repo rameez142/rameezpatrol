@@ -35,17 +35,30 @@ namespace PatrolWebApp.Controllers
 
         public string barcode { get; set; }
     }
-    
+
+    public class patrolcarcls
+    {
+        public int patrolid { get; set; }
+        public string platenumber { get; set; }
+        public int ahwalid { get; set; }
+        public string model { get; set; }
+        public string typecode { get; set; }
+        public string type { get; set; }
+        public int defective { get; set; }
+        public int rental { get; set; }
+        public string barcode { get; set; }
+    }
+
     [Route("api/[controller]")]
     public class MaintainenceController : Controller
     {
 
         // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
-        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=PatrolWebApp";
+        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=Patrols";
 
 
-        [HttpPost("adddevices")]
-        public int PostAddDevices( [FromBody]devicecls frm)
+        [HttpPost("addpatrolcar")]
+        public int PostAddPatrolCar( [FromBody]patrolcarcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -53,7 +66,7 @@ namespace PatrolWebApp.Controllers
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.devicenumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + "," + frm.rental  + ",'" + frm.barcode + "')";
+            cmd.CommandText = "insert into patrolcars(AhwalID,platenumber,model,typecode,defective,rental,barcode,vinnumber) values (" + frm.ahwalid + ",'" + frm.platenumber + "'," + frm.model + ",'1'," + frm.defective + "," + frm.rental  + ",'" + frm.barcode + "','" + frm.barcode + "')";
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -62,8 +75,8 @@ namespace PatrolWebApp.Controllers
             return ret;
         }
 
-        [HttpPost("updatedevices")]
-        public int PostUpdateDevices([FromBody] devicecls frm)
+        [HttpPost("updatepatrolcar")]
+        public int PostUpdatePatrolCar([FromBody] patrolcarcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -71,7 +84,7 @@ namespace PatrolWebApp.Controllers
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "update devices set AhwalID = " + frm.ahwalid + ",devicenumber = '" + frm.devicenumber + "',model = '" + frm.model + "',devicetypeid='" + frm.devicetypeid + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where deviceid=" + frm.deviceid ;
+            cmd.CommandText = "update patrolcars set AhwalID = " + frm.ahwalid + ",platenumber = '" + frm.platenumber + "',model = '" + frm.model + "',typecode='" + frm.typecode + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where patrolid=" + frm.patrolid ;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -81,8 +94,8 @@ namespace PatrolWebApp.Controllers
         }
 
 
-        [HttpPost("deldevices")]
-        public int PostDeleteDevices([FromBody] devicecls frm)
+        [HttpPost("delpatrolcar")]
+        public int PostDeletePatrolCar([FromBody] patrolcarcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -90,7 +103,7 @@ namespace PatrolWebApp.Controllers
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "delete from devices  where deviceid=" + frm.deviceid;
+            cmd.CommandText = "delete from patrolcars  where patrolid=" + frm.patrolid;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -100,8 +113,8 @@ namespace PatrolWebApp.Controllers
 
        
 
-        [HttpPost("deviceslist")]
-        public DataTable PostDevicesList2()
+        [HttpPost("patrolcarslist")]
+        public DataTable PostDevicesList2([FromBody] int ahwalid)
         {
 
 
@@ -109,17 +122,14 @@ namespace PatrolWebApp.Controllers
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            //            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
-            //NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,(select dt.name from devicetypes dt where dt.devicetypeid = d.devicetypeid)  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,'1'  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.patrolid,d.plateNumber,d.Model,(select codedesc from codemaster where code = typecode)  as type,typecode,d.Defective,d.Rental,d.BarCode,vinnumber from patrolcars d where ahwalid = " + ahwalid, cont);
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
-
-
             return dt;
         }
 
+       
 
         [HttpPost("devicesinventory")]
         public DataTable PostDevicesInventoryList()
@@ -130,35 +140,35 @@ namespace PatrolWebApp.Controllers
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model,(select dt.name from devicetypes dt where dt.devicetypeid = devices.devicetypeid) as Type, Persons.MilNumber, ";
-            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, DevicesCheckInOut.SavedTime, CheckInOutStates.CheckInOutStateID";
+            string Qry = "SELECT        patrolcheckinoutid, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, patrolcars.platenumber, patrolcars.Model,'' as Type, Persons.MilNumber, ";
+            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, patrolCheckInOut.timestamp, CheckInOutStates.CheckInOutStateID";
 
             Qry = Qry + "  FROM Ahwal INNER JOIN";
 
-            Qry = Qry + " Devices  ON Ahwal.AhwalID = Devices.AhwalID INNER JOIN";
+            Qry = Qry + " patrolcars  ON Ahwal.AhwalID = patrolcars.AhwalID INNER JOIN";
 
-            Qry = Qry + " DevicesCheckInOut ON Devices.DeviceID = DevicesCheckInOut.DeviceID INNER JOIN";
+            Qry = Qry + " patrolCheckInOut ON patrolcars.patrolID = patrolCheckInOut.patrolID INNER JOIN";
 
-            Qry = Qry + " CheckInOutStates ON DevicesCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
+            Qry = Qry + " CheckInOutStates ON patrolCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
 
-            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND DevicesCheckInOut.PersonID = Persons.PersonID INNER JOIN";
+            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND patrolCheckInOut.PersonID = Persons.PersonID INNER JOIN";
 
             Qry = Qry + " Ranks ON Persons.RankID = Ranks.RankID";
-            Qry = Qry + "  ORDER BY DevicesCheckInOut.SavedTime";
+            Qry = Qry + "  ORDER BY patrolCheckInOut.timestamp";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
-            dt.Columns.Add("devicecheckinoutid");
+            dt.Columns.Add("patrolcheckinoutid");
             dt.Columns.Add("statename");
             dt.Columns.Add("ahwalid");
             dt.Columns.Add("ahwalname");
-            dt.Columns.Add("devicenumber");
+            dt.Columns.Add("platenumber");
             dt.Columns.Add("model");
 
             dt.Columns.Add("type");
             dt.Columns.Add("milnumber");
             dt.Columns.Add("personrank");
             dt.Columns.Add("personname");
-            dt.Columns.Add("savedtime");
+            dt.Columns.Add("timestamp");
             dt.Columns.Add("checkinoutstateid");
             da.Fill(dt);
             cont.Close();
@@ -178,10 +188,10 @@ namespace PatrolWebApp.Controllers
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            String Qry = "SELECT AhwalMappingID, AhwalID, ShiftID, SectorID, DeviceRoleID, CityGroupID,(Select MilNumber From Persons where PersonID = AhwalMapping.PersonID) as MilNumber,";
+            String Qry = "SELECT AhwalMappingID, AhwalID, ShiftID, SectorID, PatrolRoleID, CityGroupID,(Select MilNumber From Persons where PersonID = AhwalMapping.PersonID) as MilNumber,";
 Qry = Qry + " (Select RankID From Persons where PersonID = AhwalMapping.PersonID) as RankID, (Select Name From Persons where PersonID = AhwalMapping.PersonID) as PersonName, CallerID,  ";
-Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where DeviceID = AhwalMapping.DeviceID) as DeviceNumber, ";
-            Qry = Qry + " DevicePersonStateID, SunRiseTimeStamp, SunSetTimeStamp, SortingIndex,(Select Mobile From Persons where PersonID = AhwalMapping.PersonID) as PersonMobile,IncidentID,";
+Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars where patrolid = AhwalMapping.patrolid) as PlateNumber, ";
+            Qry = Qry + " PatrolPersonStateID, SunRiseTimeStamp, SunSetTimeStamp, SortingIndex,(Select Mobile From Persons where PersonID = AhwalMapping.PersonID) as PersonMobile,IncidentID,";
             Qry = Qry + " LastStateChangeTimeStamp,(Select ShortName From sectors where SectorID=AhwalMapping.SectorID) as SectorDesc , (Select (select Name from Ranks where rankid = persons.rankid) From Persons where PersonID=AhwalMapping.PersonID) as RankDesc FROM AhwalMapping ";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
@@ -200,7 +210,7 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            String Qry = "SELECT name as value, name as text FROM Ahwal ";
+            String Qry = "SELECT ahwalid as value, name as text FROM Ahwal ";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
             da.Fill(dt);
@@ -210,17 +220,20 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             return dt;
         }
 
-        [HttpPost("devicetyplist")]
+     
+
+        [HttpPost("patrolcartypes")]
         public DataTable Postdevicetyplist()
         {
             NpgsqlConnection cont = new NpgsqlConnection();
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            String Qry = "SELECT id as value, name as text FROM devicetypes ";
+            String Qry = "select 'xx'  as value,'' as text  union all SELECT code as value, codedesc as text FROM codemaster";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
             da.Fill(dt);
+            
             cont.Close();
             cont.Dispose();
 
@@ -480,39 +493,40 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model,(select dt.name from devicetypes dt where dt.devicetypeid = devices.devicetypeid) as Type, Persons.MilNumber, ";
-            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, DevicesCheckInOut.SavedTime, CheckInOutStates.CheckInOutStateID";
+            string Qry = "SELECT        patrolcheckinoutid, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, patrolcars.platenumber, patrolcars.Model,'' as Type, Persons.MilNumber, ";
+            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, patrolCheckInOut.timestamp, CheckInOutStates.CheckInOutStateID";
 
             Qry = Qry + "  FROM Ahwal INNER JOIN";
 
-            Qry = Qry + " Devices  ON Ahwal.AhwalID = Devices.AhwalID INNER JOIN";
+            Qry = Qry + " patrolcars  ON Ahwal.AhwalID = patrolcars.AhwalID INNER JOIN";
 
-            Qry = Qry + " DevicesCheckInOut ON Devices.DeviceID = DevicesCheckInOut.DeviceID INNER JOIN";
+            Qry = Qry + " patrolCheckInOut ON patrolcars.patrolID = patrolCheckInOut.patrolID INNER JOIN";
 
-            Qry = Qry + " CheckInOutStates ON DevicesCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
+            Qry = Qry + " CheckInOutStates ON patrolCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
 
-            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND DevicesCheckInOut.PersonID = Persons.PersonID INNER JOIN";
+            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND patrolCheckInOut.PersonID = Persons.PersonID INNER JOIN";
 
             Qry = Qry + " Ranks ON Persons.RankID = Ranks.RankID";
-            Qry = Qry + "  ORDER BY DevicesCheckInOut.SavedTime";
+            Qry = Qry + "  ORDER BY patrolCheckInOut.timestamp";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
-            dt.Columns.Add("devicecheckinoutid");
+            dt.Columns.Add("patrolcheckinoutid");
             dt.Columns.Add("statename");
             dt.Columns.Add("ahwalid");
             dt.Columns.Add("ahwalname");
-            dt.Columns.Add("devicenumber");
+            dt.Columns.Add("platenumber");
             dt.Columns.Add("model");
 
             dt.Columns.Add("type");
             dt.Columns.Add("milnumber");
             dt.Columns.Add("personrank");
             dt.Columns.Add("personname");
-            dt.Columns.Add("savedtime");
+            dt.Columns.Add("timestamp");
             dt.Columns.Add("checkinoutstateid");
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
+
 
 
             return dt;
@@ -530,39 +544,40 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select DeviceNumber From Devices where
             cont.ConnectionString = constr;
             cont.Open();
             DataTable dt = new DataTable();
-            string Qry = "SELECT        DeviceCheckInOutID, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, Devices.deviceNumber, Devices.Model,(select dt.name from devicetypes dt where dt.devicetypeid = devices.devicetypeid) as Type, Persons.MilNumber, ";
-            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, DevicesCheckInOut.SavedTime, CheckInOutStates.CheckInOutStateID";
+            string Qry = "SELECT        patrolcheckinoutid, CheckInOutStates.Name AS StateName, Ahwal.AhwalID, Ahwal.Name AS AhwalName, patrolcars.platenumber, patrolcars.Model,'' as Type, Persons.MilNumber, ";
+            Qry = Qry + " Ranks.Name AS PersonRank, Persons.Name AS PersonName, patrolCheckInOut.timestamp, CheckInOutStates.CheckInOutStateID";
 
             Qry = Qry + "  FROM Ahwal INNER JOIN";
 
-            Qry = Qry + " Devices  ON Ahwal.AhwalID = Devices.AhwalID INNER JOIN";
+            Qry = Qry + " patrolcars  ON Ahwal.AhwalID = patrolcars.AhwalID INNER JOIN";
 
-            Qry = Qry + " DevicesCheckInOut ON Devices.DeviceID = DevicesCheckInOut.DeviceID INNER JOIN";
+            Qry = Qry + " patrolCheckInOut ON patrolcars.patrolID = patrolCheckInOut.patrolID INNER JOIN";
 
-            Qry = Qry + " CheckInOutStates ON DevicesCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
+            Qry = Qry + " CheckInOutStates ON patrolCheckInOut.CheckInOutStateID = CheckInOutStates.CheckInOutStateID INNER JOIN";
 
-            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND DevicesCheckInOut.PersonID = Persons.PersonID INNER JOIN";
+            Qry = Qry + " Persons ON Ahwal.AhwalID = Persons.AhwalID AND patrolCheckInOut.PersonID = Persons.PersonID INNER JOIN";
 
             Qry = Qry + " Ranks ON Persons.RankID = Ranks.RankID";
-            Qry = Qry + "  ORDER BY DevicesCheckInOut.SavedTime";
+            Qry = Qry + "  ORDER BY patrolCheckInOut.timestamp";
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
-            dt.Columns.Add("devicecheckinoutid");
+            dt.Columns.Add("patrolcheckinoutid");
             dt.Columns.Add("statename");
             dt.Columns.Add("ahwalid");
             dt.Columns.Add("ahwalname");
-            dt.Columns.Add("devicenumber");
+            dt.Columns.Add("platenumber");
             dt.Columns.Add("model");
 
             dt.Columns.Add("type");
             dt.Columns.Add("milnumber");
             dt.Columns.Add("personrank");
             dt.Columns.Add("personname");
-            dt.Columns.Add("savedtime");
+            dt.Columns.Add("timestamp");
             dt.Columns.Add("checkinoutstateid");
             da.Fill(dt);
             cont.Close();
             cont.Dispose();
+
 
 
             return dt;
