@@ -218,7 +218,6 @@ LoadData()
 }
 
 onToolbarPreparing(e) {
-
 let strt :any=[];
 strt =JSON.parse(window.localStorage.getItem("Orgs"));
   e.toolbarOptions.items.unshift({
@@ -246,8 +245,6 @@ strt =JSON.parse(window.localStorage.getItem("Orgs"));
 }
 
 groupChanged(e) {
- // this.dataGrid.instance.clearGrouping();
-  //this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
   this.selahwalid = e.value;
  this.LoadData();
 }
