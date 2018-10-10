@@ -3,9 +3,9 @@
 
             <form method="post" enctype="multipart/form-data">
 
-          <header class="pageHeader">
+          <!-- <header class="pageHeader">
             <h3><i class="fa fa-handshake-o fa-lg page-caption" aria-hidden="true"></i> PatrolCars</h3>
-          </header>
+          </header> -->
 
          
                   <dx-data-grid
@@ -25,23 +25,23 @@
                   (onContextMenuPreparing)= "ContextMenuprepare($event)"
                keyexpr="patrolid"
                 >
-                  <dxo-paging [pageSize]="10"></dxo-paging>
-                  <dxo-pager
-                  [showPageSizeSelector]="true"
+                  <dxo-paging   [pageSize]="10"></dxo-paging>
+                  <dxo-pager  
+                  [showPageSizeSelector]="false"
                   [allowedPageSizes]="[10, 50, 100]"
-                  [showInfo]="true">
+                  [showInfo]="false">
               </dxo-pager>
 
               <dxo-editing
               mode="popup"
-              [allowUpdating]="true"
-              [allowDeleting]="true"
-              [allowAdding]="true"
+              [allowUpdating]="false"
+              [allowDeleting]="false"
+              [allowAdding]="false"
 
              >
              <dxo-popup
-             title="Device Info"
-             [showTitle]="true"
+             title=""
+             [showTitle]="false"
              [width]="800"
              [height]="600"
              [position]="{ my: 'top', at: 'top', of: window }"
@@ -52,8 +52,8 @@
               </dxo-editing>
 
               <dxo-selection mode="single"></dxo-selection>
-              <dxo-export [enabled]="true" fileName="Patrol Cars"></dxo-export>
-              <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
+               <dxo-export [enabled]="false"  fileName="Patrol Cars"></dxo-export> 
+              <!-- <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser> -->
               <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
               <dxo-filter-row  [visible]="true"></dxo-filter-row>
              
@@ -69,8 +69,8 @@
                   (onShown)="onShown()">
               </dx-load-panel>
 
-              <dxi-column dataField="platenumber"   [allowEditing] ="true" ></dxi-column>
-              <dxi-column dataField="type" [allowEditing] ="true"  [allowFiltering]="false" editCellTemplate="typeCellTemplate"></dxi-column>
+              <dxi-column dataField="platenumber" caption="رقم الدورية"  [allowEditing] ="true" ></dxi-column>
+              <dxi-column dataField="type" [allowEditing] ="true" caption="النوع"  [allowFiltering]="false" editCellTemplate="typeCellTemplate"></dxi-column>
               <div *dxTemplate="let data of 'typeCellTemplate'">
                 <dx-select-box
                 [dataSource]="typelist"
@@ -80,11 +80,11 @@
                 (onValueChanged)="seltypechange($event)"></dx-select-box>
                 </div>
              
-               <dxi-column dataField="model"></dxi-column>
+               <dxi-column dataField="model" caption="موديل"></dxi-column>
                
-              <dxi-column dataField="barcode"   ></dxi-column>
-              <dxi-column dataField="vinnumber" ></dxi-column>
-              <dxi-column dataField="defective" editCellTemplate="defCellTemplate" cellTemplate="defchecktemplate"></dxi-column>
+              <dxi-column dataField="barcode"  caption="رقم الباركود"  [allowFiltering]="false"></dxi-column>
+              <dxi-column dataField="vinnumber" caption="رقم الشاصي"></dxi-column>
+              <dxi-column dataField="defective" caption="غير صالحة؟"  [allowFiltering]="false" editCellTemplate="defCellTemplate" cellTemplate="defchecktemplate"></dxi-column>
               <div *dxTemplate="let data of 'defCellTemplate'">
                    
                         <dx-check-box
@@ -97,7 +97,7 @@
                     [value]="data.value"
                     ></dx-check-box>
                     </div>
-              <dxi-column dataField="rental" cellTemplate="rentchktemplate" editCellTemplate="rentCellTemplate"></dxi-column>
+              <dxi-column dataField="rental" caption="ايجار؟"  [allowFiltering]="false" cellTemplate="rentchktemplate" editCellTemplate="rentCellTemplate"></dxi-column>
               <div *dxTemplate="let data of 'rentCellTemplate'">
                 <dx-check-box
                 [value]="0" 
@@ -123,8 +123,8 @@
                 class="popup"
                 [width]="600"
                 [height]="500"
-                [showTitle]="true"
-                title="Information"
+                [showTitle]="false"
+                title=""
                 [dragEnabled]="false"
                 [closeOnOutsideClick]="true"
                 [(visible)]="popupVisible">
@@ -162,12 +162,12 @@
                     </p>
                 </div>
             </dx-popup>
-            <dx-context-menu 
+          <!--   <dx-context-menu 
     [dataSource]="items" 
     [width]="200" 
     target="#gridContainer" 
     (onItemClick)="itemClick($event)">
-</dx-context-menu>
+</dx-context-menu> -->
                     </form>
 
           </div>

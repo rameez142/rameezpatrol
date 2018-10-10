@@ -69,7 +69,7 @@ namespace PatrolWebApp
                 {
                     //spa.UseAngularCliServer(npmScript: "start");
                     spa.Options.StartupTimeout = TimeSpan.FromSeconds(600); // Increase the timeout if angular app is taking longer to startup
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4201"); // Use this instead to use the angular cli server
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); // Use this instead to use the angular cli server
                 }
             });
         }

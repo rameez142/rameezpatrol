@@ -85,9 +85,56 @@ export class PatrolcarsComponent implements OnInit {
   ContextMenuprepare(e)
   {
      if (e.row.rowType === "data") {
-       
+      e.items = [{
+        text: "جديد",
+        value:e.row.rowIndex,
+        onItemClick: this.ContextMenuClick.bind(this)
+    },
+    {
+        text: "تعديل",
+        value:e.row.rowIndex,
+        onItemClick:this.ContextMenuClick.bind(this)
+    },
+    {
+        text: "حذف",
+        value:e.row.rowIndex,
+        onItemClick: this.ContextMenuClick.bind(this)
+    },
+    {
+      text: "تقرير",
+      items:[{ text: "Excel",
+    value:e.row.rowIndex,
+    onItemClick: this.ContextMenuClick.bind(this)
+  }]
+      
+  }];
+
     }
   }
+
+  ContextMenuClick(e)
+  {
+    console.log(e);
+    if (e.itemIndex === 0)
+    {
+      this.dataGrid.instance.insertRow();
+    }
+    if (e.itemIndex === 1)
+    {
+      this.dataGrid.instance.editRow(e.itemData.value);
+    }
+
+    if (e.itemIndex === 2)
+    {
+      this.dataGrid.instance.deleteRow(e.itemData.value);
+    }
+
+    if (e.itemIndex === 4)
+    {
+      this.dataGrid.instance.exportToExcel(false);
+    }
+  }
+
   Cellprepare(e)
   {
     if (e.rowType === 'filter') {
@@ -168,7 +215,7 @@ let strt :any=[];
 strt =JSON.parse(window.localStorage.getItem("Orgs"));
   e.toolbarOptions.items.unshift({
       location: 'before',
-      template: 'Organization'
+      template: 'الأحوال'
   }, {
           location: 'before',
           widget: 'dxSelectBox',
