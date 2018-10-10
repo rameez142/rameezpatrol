@@ -218,7 +218,7 @@ LoadData()
 }
 
 onToolbarPreparing(e) {
-// console.log();
+
 let strt :any=[];
 strt =JSON.parse(window.localStorage.getItem("Orgs"));
   e.toolbarOptions.items.unshift({
