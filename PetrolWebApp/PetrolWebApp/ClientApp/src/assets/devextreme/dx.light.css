@@ -6344,8 +6344,8 @@
   background-color: transparent;
 }
 .dx-datagrid-headers {
-  color: #959595;
-  font-weight: normal;
+  color: black;
+  font-weight: medium;
   -ms-touch-action: pinch-zoom;
   touch-action: pinch-zoom;
   border-bottom: 1px solid #ddd;

@@ -54,8 +54,9 @@ export class PatrolcarsComponent implements OnInit {
   }
   
 ];
+this.populatetypelist();
     this.showLoadPanel();
-  this.populatetypelist();
+
   }
 
   itemClick(e) {
@@ -138,7 +139,7 @@ export class PatrolcarsComponent implements OnInit {
   Cellprepare(e)
   {
     if (e.rowType === 'filter') {
-   
+      
       if(e.columnIndex === 1)
       {
     
@@ -152,9 +153,13 @@ export class PatrolcarsComponent implements OnInit {
           ,
 
         });
-     
+     this.populatetypelist();
       }
       }
+      /* if (e.rowType === 'header') {
+        e.cellElement.class='gridhdrcls';
+       
+        } */
     }
 
     onValueChangeOfSelectbox(e) {
@@ -188,7 +193,7 @@ export class PatrolcarsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.populatetypelist();
     this.LoadData();
   }
 
@@ -200,8 +205,11 @@ LoadData()
        this.dataSource = JSON.parse(resp);
      // console.log('resp' + resp);
       this.dataGrid.dataSource = this.dataSource;
+     
+     
       this.dataGrid.instance.refresh();
-
+      this.populatetypelist();
+      this.dataGrid.instance.refresh();
   },
     error => {
 
