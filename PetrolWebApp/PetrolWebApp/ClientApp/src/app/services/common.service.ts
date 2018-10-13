@@ -31,7 +31,7 @@ export class CommonService {
           return this.http.post(this.api_url + "/api/maintainence/delpatrolcar", frm, { responseType: 'text' })
           }
 
-      
+
 
           public GetPatrolCarTypes(){
             return this.http.post(this.api_url + "/api/maintainence/patrolcartypes", null, { responseType: 'text' })
@@ -39,19 +39,19 @@ export class CommonService {
 
 //#region Hand Held
 public GethandheldsList(){
-  return this.http.post(this.api_url + "/api/maintainence/handheldslist", null, { responseType: 'text' })
+  return this.http.post(this.api_url + "/api/maintainence/handheldlist", null, { responseType: 'text' })
   }
 public Addhandhelds(frm:handheldcls){
-  return this.http.post(this.api_url + "/api/maintainence/addhandhelds", frm, { responseType: 'text' })
+  return this.http.post(this.api_url + "/api/maintainence/addhandheld", frm, { responseType: 'text' })
   }
 
   public Updatehandhelds(frm:handheldcls){
-    return this.http.post(this.api_url + "/api/maintainence/updatehandhelds", frm, { responseType: 'text' })
+    return this.http.post(this.api_url + "/api/maintainence/updatehandheld", frm, { responseType: 'text' })
     }
 
     public Deletehandhelds(frm:handheldcls){
       console.log(frm);
-      return this.http.post(this.api_url + "/api/maintainence/delhandhelds", frm, { responseType: 'text' })
+      return this.http.post(this.api_url + "/api/maintainence/delhandheld", frm, { responseType: 'text' })
       }
 
       //#region Accessory
@@ -116,5 +116,5 @@ public Addpersons(frm:personcls){
         return this.http.post(this.api_url + "/api/maintainence/dispatchlist", null, { responseType: 'text' })
         }
 
-        
+
 }

@@ -49,12 +49,22 @@ namespace PatrolWebApp.Controllers
         public string barcode { get; set; }
     }
 
+    public class handheldcls
+    {
+        public int handheldid { get; set; }
+        public string serial { get; set; }
+        public int ahwalid { get; set; }
+       
+        public int defective { get; set; }
+      
+        public string barcode { get; set; }
+    }
     [Route("api/[controller]")]
     public class MaintainenceController : Controller
     {
 
         // public String constr2 = "Server=BCI666016PC57;Database=patrols;User Id =patrol;Password=patrol;";
-        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=Patrols";
+        public String constr = "server=localhost;Port=5432;User Id=postgres;password=admin;Database=Patrol";
 
 
         [HttpPost("addpatrolcar")]
@@ -220,7 +230,23 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             return dt;
         }
 
-     
+
+        [HttpPost("checkuser")]
+        public DataTable PostCheckUser()
+        {
+            NpgsqlConnection cont = new NpgsqlConnection();
+            cont.ConnectionString = constr;
+            cont.Open();
+            DataTable dt = new DataTable();
+            String Qry = "SELECT ahwalid as value, name as text FROM Ahwal ";
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(Qry, cont);
+            da.Fill(dt);
+            cont.Close();
+            cont.Dispose();
+
+            return dt;
+        }
 
         [HttpPost("patrolcartypes")]
         public DataTable Postdevicetyplist()
@@ -242,8 +268,8 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
 
         /*Hand Helds*/
         #region Hand Helds
-        [HttpPost("addhandhelds")]
-        public int PostAddHandhelds([FromBody]devicecls frm)
+        [HttpPost("addhandheld")]
+        public int PostAddHandhelds([FromBody]handheldcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -251,7 +277,7 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "insert into devices(AhwalID,devicenumber,model,devicetypeid,defective,rental,barcode) values (" + frm.ahwalid + ",'" + frm.devicenumber + "'," + frm.model + "," + frm.devicetypeid + "," + frm.defective + "," + frm.rental + ",'" + frm.barcode + "')";
+            cmd.CommandText = "insert into handhelds(AhwalID,serial,defective,barcode) values (" + frm.ahwalid + ",'" + frm.serial + "'," + frm.defective + ",'" + frm.barcode + "')";
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -260,8 +286,8 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             return ret;
         }
 
-        [HttpPost("updatehandhelds")]
-        public int PostUpdateHandhelds([FromBody] devicecls frm)
+        [HttpPost("updatehandheld")]
+        public int PostUpdateHandhelds([FromBody] handheldcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -269,7 +295,7 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "update devices set AhwalID = " + frm.ahwalid + ",devicenumber = '" + frm.devicenumber + "',model = '" + frm.model + "',devicetypeid='" + frm.devicetypeid + "',defective = " + frm.defective + ",rental = " + frm.rental + ",barcode = '" + frm.barcode + "' where deviceid=" + frm.deviceid;
+            cmd.CommandText = "update handhelds set AhwalID = " + frm.ahwalid + ",serial = '" + frm.serial + "',defective = " + frm.defective + ",barcode = '" + frm.barcode + "' where handheldid=" + frm.handheldid;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -280,7 +306,7 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
 
 
         [HttpPost("delhandheld")]
-        public int PostDeletehandheld([FromBody] devicecls frm)
+        public int PostDeletehandheld([FromBody] handheldcls frm)
         {
             int ret = 0;
             NpgsqlConnection cont = new NpgsqlConnection();
@@ -288,7 +314,7 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             cont.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = cont;
-            cmd.CommandText = "delete from devices  where deviceid=" + frm.deviceid;
+            cmd.CommandText = "delete from handhelds  where handheldid=" + frm.handheldid;
             ret = cmd.ExecuteNonQuery();
             cont.Close();
             cont.Dispose();
@@ -308,7 +334,8 @@ Qry = Qry + " HasDevices, '' as Serial,  (Select plateNumber From patrolcars whe
             cont.Open();
             DataTable dt = new DataTable();
             //            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,t.name as type,d.Defective,d.Rental,d.BarCode,a.Name from Devices d INNER JOIN Ahwal a ON a.AhwalID = d.AhwalID inner join devicetypes t on t.devicetypeid = d.devicetypeid ", cont);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,(select dt.name from devicetypes dt where dt.devicetypeid = d.devicetypeid)  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
+            //NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,(select dt.name from devicetypes dt where dt.devicetypeid = d.devicetypeid)  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.handheldid,d.serial,d.Defective,d.BarCode from handhelds d", cont);
             // NpgsqlDataAdapter da = new NpgsqlDataAdapter("select d.deviceid,d.DeviceNumber,d.Model,'1'  as type,d.Defective,d.Rental,d.BarCode,'jjjj' as Name from Devices d", cont);
             da.Fill(dt);
             cont.Close();

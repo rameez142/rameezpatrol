@@ -20,25 +20,26 @@
                   (onRowUpdated)="RowUpdate($event)"
                   (onToolbarPreparing)="onToolbarPreparing($event)"
                   (onEditorPreparing)="PopupInitialize($event)"
-               keyexpr="deviceid"
+                  (onContextMenuPreparing)= "ContextMenuprepare($event)"
+               keyexpr="handheldid"
                 >
-                  <dxo-paging [pageSize]="1"></dxo-paging>
+                  <dxo-paging [pageSize]="80"></dxo-paging>
                   <dxo-pager
                   [showPageSizeSelector]="true"
-                  [allowedPageSizes]="[1, 50, 100]"
+                  [allowedPageSizes]="[80, 50, 100]"
                   [showInfo]="true">
               </dxo-pager>
 
               <dxo-editing
               mode="popup"
               [allowUpdating]="false"
-              [allowDeleting]="true"
-              [allowAdding]="true"
+              [allowDeleting]="false"
+              [allowAdding]="false"
 
              >
              <dxo-popup
-             title="Device Info"
-             [showTitle]="true"
+             title=""
+             [showTitle]="false"
              [width]="500"
              [height]="345"
              [position]="{ my: 'top', at: 'top', of: window }"
@@ -49,13 +50,11 @@
               </dxo-editing>
 
               <dxo-selection mode="single"></dxo-selection>
-              <dxo-export [enabled]="true" fileName="Vehicle"></dxo-export>
+              <dxo-export [enabled]="false" fileName="HandHelds"></dxo-export>
 
               <dxo-header-filter
               [visible]="true"></dxo-header-filter>
-              <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
-              <dxo-state-storing [enabled]="true" type="localStorage" storageKey="storage"></dxo-state-storing>
-              <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+              <dxo-column-chooser [enabled]="false" mode="select"></dxo-column-chooser>
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-header-filter [visible]="true"></dxo-header-filter>
               <dx-load-panel
@@ -70,25 +69,22 @@
                   (onShown)="onShown()">
               </dx-load-panel>
 
-              <dxi-column dataField="devicenumber" ></dxi-column>
-              <dxi-column dataField="type" editCellTemplate="typecelltemplate" [groupIndex]="1"></dxi-column>
-              <dxi-column dataField="model"></dxi-column>
-              <dxi-column dataField="barcode"></dxi-column>
-              <dxi-column dataField="defective"></dxi-column>
-              <dxi-column dataField="rental" editCellTemplate="dataCellTemplate"></dxi-column>
-              <div *dxTemplate="let data of 'dataCellTemplate'">
-                <dx-check-box
-                [value]="0"
-                (onValueChanged)="checkBoxToggled($event)"
-                ></dx-check-box>
-                </div>
-                <div *dxTemplate="let data of 'typecelltemplate'">
+              <dxi-column dataField="serial" ></dxi-column>
+              <dxi-column dataField="barcode" caption="رقم الباركود"></dxi-column>
+              <dxi-column dataField="defective" caption="غير صالحة؟"  [allowFiltering]="false" editCellTemplate="defCellTemplate" cellTemplate="defchecktemplate"></dxi-column>
+              <div *dxTemplate="let data of 'defCellTemplate'">
 
-                  </div>
+                        <dx-check-box
+                        [value]="0"
+                        (onValueChanged)="chkdeftoggle($event)"
+                        ></dx-check-box>
+                    </div>
+                <div *dxTemplate="let data of 'defchecktemplate'">
+                    <dx-check-box
+                    [value]="data.value"
+                    ></dx-check-box>
+                    </div>
                 </dx-data-grid>
-
-
-
                     </form>
 
           </div>

@@ -10,17 +10,19 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
-import { DxMenuModule,DxContextMenuModule,DxSelectBoxModule,DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule } from "devextreme-angular";
+import { DxMenuModule,DxContextMenuModule,DxSelectBoxModule,DxPopupModule,DxDataGridModule } from 'devextreme-angular';
+import {DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule } from 'devextreme-angular';
+import {DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule} from 'devextreme-angular';
 import { CommonService } from './services/common.service';
-import { DeviceinventoryComponent } from './maintainence/deviceinventory/deviceinventory.component';
+import { PatrolCarsinventoryComponent } from './maintainence/inventory/patrolcarsinventory/patrolcarsinventory.component';
 import { DispatchComponent } from './dispatcher/dispatch/dispatch.component';
 import { PatrolcarsComponent } from './maintainence/patrolcars/patrolcars.component';
 import { HandheldsComponent } from './maintainence/handhelds/handhelds.component';
 import { AccessoriesComponent } from './maintainence/accessories/accessories.component';
-//import {TabModule} from 'angular-tabs-component';
-import { HandheldinventoryComponent } from './maintainence/deviceinventory/handheldinventory/handheldinventory.component';
-import { AccessoryinventoryComponent } from './maintainence/deviceinventory/accessoryinventory/accessoryinventory.component';
+import { HandheldinventoryComponent } from './maintainence/inventory/handheldinventory/handheldinventory.component';
+import { AccessoryinventoryComponent } from './maintainence/inventory/accessoryinventory/accessoryinventory.component';
 import { EmployeesComponent } from './dispatcher/employees/employees.component';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -31,7 +33,7 @@ import { EmployeesComponent } from './dispatcher/employees/employees.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    DeviceinventoryComponent,
+    PatrolCarsinventoryComponent,
     DispatchComponent,
     DispatchComponent,
     PatrolcarsComponent,
@@ -39,19 +41,22 @@ import { EmployeesComponent } from './dispatcher/employees/employees.component';
     AccessoriesComponent,
     HandheldinventoryComponent,
     AccessoryinventoryComponent,
-    EmployeesComponent
+    EmployeesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,DxSelectBoxModule,DxContextMenuModule,DxMenuModule,
-    DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,DxCheckBoxModule,
+    DxPopupModule,DxDataGridModule,DxButtonModule ,DxTemplateModule,
+    DxLoadIndicatorModule,DxLoadPanelModule, DxTabPanelModule,
+    DxCheckBoxModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'patrolcars', component: PatrolcarsComponent },
-      { path: 'deviceinventory', component: DeviceinventoryComponent },
+      { path: 'deviceinventory', component: PatrolCarsinventoryComponent },
       { path: 'hadheld', component: HandheldsComponent },
       { path: 'accessory', component: AccessoriesComponent },
       { path: 'handheldinvent', component: HandheldinventoryComponent },

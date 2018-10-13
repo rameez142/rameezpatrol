@@ -44,32 +44,18 @@ export class PatrolcarsComponent implements OnInit {
 
 
   constructor(private svc:CommonService) {
-    this.items = [{ text: 'جديد' },
-    { text: 'تعديل' },
-    { text: 'حذف' },{
-      text: 'تقرير',
-      items: [
-          { text: 'PDF' },
-          { text: 'Excel' }]
-  }
-  
-];
+
 this.populatetypelist();
     this.showLoadPanel();
 
   }
 
-  itemClick(e) {
-    if (!e.itemData.items) {
-        notify("The \"" + e.itemData.index + "\" item was clicked", "success", 1500);
-    }
-}
-  
+
   populatetypelist()
   {
     this.svc.GetPatrolCarTypes().subscribe(resp =>
       {
-  
+
          this.typelist = JSON.parse(resp);
       },
         error => {
@@ -80,7 +66,7 @@ this.populatetypelist();
   ContentReady2(e) {
     if (!e.component.__isInitialized) {
         e.component.__isInitialized = true;
-     
+
     }
   }
   ContextMenuprepare(e)
@@ -107,7 +93,7 @@ this.populatetypelist();
     value:e.row.rowIndex,
     onItemClick: this.ContextMenuClick.bind(this)
   }]
-      
+
   }];
 
     }
@@ -139,10 +125,10 @@ this.populatetypelist();
   Cellprepare(e)
   {
     if (e.rowType === 'filter') {
-      
+
       if(e.columnIndex === 1)
       {
-    
+
 
        this.selectBox2 = new SelectBox(e.cellElement,
          {
@@ -158,14 +144,14 @@ this.populatetypelist();
       }
       /* if (e.rowType === 'header') {
         e.cellElement.class='gridhdrcls';
-       
+
         } */
     }
 
     onValueChangeOfSelectbox(e) {
-  
+
           if (e.name === 'selectedItem' ) {
-          
+
             console.log(e.value.text);
       if (e.value.text === "") {
         console.log('clear filters');
@@ -174,9 +160,9 @@ this.populatetypelist();
         console.log('filters contains');
         this.dataGrid.instance.filter(['type', 'contains', e.value.text]);
       }
-          
+
           }
-      
+
         }
 
    onShown() {
@@ -205,8 +191,8 @@ LoadData()
        this.dataSource = JSON.parse(resp);
      // console.log('resp' + resp);
       this.dataGrid.dataSource = this.dataSource;
-     
-     
+
+
       this.dataGrid.instance.refresh();
       this.populatetypelist();
       this.dataGrid.instance.refresh();
@@ -253,12 +239,12 @@ groupChanged(e) {
 
 refreshDataGrid() {
   this.LoadData();
-  
+
 }
 
 cleardata()
 {
-  
+
   this.patrolcarobj = null;
   this.patrolcarobj= new patrolcarscls();
  /* this.patrolcarobj.ahwalid =  -1;
@@ -275,18 +261,18 @@ cleardata()
 
 PopupInitialize(e)
 {
- 
+
   this.cleardata();
- 
+
   this.cleardefaultvalues();
-  
+
   //e.component.columnOption("barcode", "allowEditing", false);
   if (e.parentType === 'dataRow' && e.dataField === 'barcode')
   {
   e.cancel = true;
   e.component.columnOption("barcode", "formItem", "{visible: false}");
     }
- 
+
 }
 cleardefaultvalues()
 {
@@ -371,7 +357,7 @@ RowDelete(e)
   this.cleardata();
 
   this.patrolcarobj.patrolid =  e.data.patrolid;
- // console.log(e);
+ console.log(e.data.patrolid);
   this.svc.DeletePatrolCar(this.patrolcarobj).subscribe(resp =>
     {
 

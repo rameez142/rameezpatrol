@@ -20,7 +20,9 @@ export class HandheldsComponent implements OnInit {
   typesrc:any;
   dataSource: any;
   devicetypesrc:any;
-  public deviceobj:handheldcls = new handheldcls();
+
+
+  public handheldobj:handheldcls = new handheldcls();
 
 
   constructor(private svc:CommonService) {
@@ -64,38 +66,25 @@ LoadData()
 
     });
 
-    /*this.svc.GetDeviceTypesList().subscribe(resp =>
-      {
 
-         this.devicetypesrc = JSON.parse(resp);
-
-
-    },
-      error => {
-
-      });*/
 
 }
 onToolbarPreparing(e) {
+  let strt :any=[];
+strt =JSON.parse(window.localStorage.getItem("Orgs"));
   e.toolbarOptions.items.unshift({
       location: 'before',
-      template: 'Organization'
+      template: 'الأحوال'
   }, {
-          location: 'before',
-          widget: 'dxSelectBox',
-          options: {
-              width: 200,
-              items: [{
-                  value: 'Org1',
-                  text: 'Grouping by Org1'
-              }, {
-                  value: 'Org2',
-                  text: 'Grouping by Org2'
-              }],
-              displayExpr: 'text',
-              valueExpr: 'value',
-              value: 'CustomerStoreState',
-              onValueChanged: this.groupChanged.bind(this)
+    location: 'before',
+    widget: 'dxSelectBox',
+    options: {
+        width: 200,
+        items: strt,
+        displayExpr: 'text',
+        valueExpr: 'value',
+        value:'1',
+        onValueChanged: this.groupChanged.bind(this)
           }
       }, {
           location: 'after',
@@ -108,10 +97,62 @@ onToolbarPreparing(e) {
 }
 
 groupChanged(e) {
-  this.dataGrid.instance.clearGrouping();
-  this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
+  this.selahwalid = e.value;
+ this.LoadData();
 }
 
+ContextMenuprepare(e)
+{
+   if (e.row.rowType === "data") {
+    e.items = [{
+      text: "جديد",
+      value:e.row.rowIndex,
+      onItemClick: this.ContextMenuClick.bind(this)
+  },
+  {
+      text: "تعديل",
+      value:e.row.rowIndex,
+      onItemClick:this.ContextMenuClick.bind(this)
+  },
+  {
+      text: "حذف",
+      value:e.row.rowIndex,
+      onItemClick: this.ContextMenuClick.bind(this)
+  },
+  {
+    text: "تقرير",
+    items:[{ text: "Excel",
+  value:e.row.rowIndex,
+  onItemClick: this.ContextMenuClick.bind(this)
+}]
+
+}];
+
+  }
+}
+
+ContextMenuClick(e)
+{
+  console.log(e);
+  if (e.itemIndex === 0)
+  {
+    this.dataGrid.instance.insertRow();
+  }
+  if (e.itemIndex === 1)
+  {
+    this.dataGrid.instance.editRow(e.itemData.value);
+  }
+
+  if (e.itemIndex === 2)
+  {
+    this.dataGrid.instance.deleteRow(e.itemData.value);
+  }
+
+  if (e.itemIndex === 4)
+  {
+    this.dataGrid.instance.exportToExcel(false);
+  }
+}
 
 
 refreshDataGrid() {
@@ -121,14 +162,8 @@ refreshDataGrid() {
 
 cleardata()
 {
-  this.deviceobj.ahwalid =  -1;
-  this.deviceobj.barcode = '';
-  this.deviceobj.defective =  -1;
-  this.deviceobj.devicenumber =  '';
-  this.deviceobj.devicetypeid =  -1;
-  this.deviceobj.model =  '';
-  this.deviceobj.rental = -1;
-  this.deviceobj.deviceid =  -1;
+  this.handheldobj = null;
+  this.handheldobj= new handheldcls();
 }
 
 PopupInitialize(e)
@@ -136,25 +171,40 @@ PopupInitialize(e)
   console.log('popupini');
   this.cleardata();
   this.cleardefaultvalues();
+  if (e.parentType === 'dataRow' && e.dataField === 'barcode')
+  {
+  e.cancel = true;
+  e.component.columnOption("barcode", "formItem", "{visible: false}");
+    }
 }
 cleardefaultvalues()
 {
-  this.rentalchk = 0;
+
   this.defectchk = 0;
+}
+chkdeftoggle(e)
+{
+  //console.log(e.value);
+  if( e.value === true)
+  {
+    this.defectchk = 1;
+  }
+  else{
+    this.defectchk = 0;
+  }
+
 }
 RowAdd(e)
 {
-  console.log(this.rentalchk);
-  this.cleardata();
-  this.deviceobj.ahwalid =  this.selahwalid;
-  this.deviceobj.barcode =  e.data.barcode;
-  this.deviceobj.defective =  e.data.defective;
-  this.deviceobj.devicenumber =  e.data.devicenumber;
-  this.deviceobj.devicetypeid =  1;
-  this.deviceobj.model =  e.data.model;
-  this.deviceobj.rental = this.rentalchk;
 
-  this.svc.Deletehandhelds(this.deviceobj).subscribe(resp =>
+  this.cleardata();
+  this.handheldobj.ahwalid =  this.selahwalid;
+  this.handheldobj.barcode =  e.data.barcode;
+  this.handheldobj.defective =  this.defectchk;
+  this.handheldobj.serial =  e.data.serial;
+
+
+  this.svc.Addhandhelds(this.handheldobj).subscribe(resp =>
     {
       console.log('resp' + resp);
      this.LoadData();
@@ -165,28 +215,23 @@ RowAdd(e)
     this.cleardata();
     this.cleardefaultvalues();
 
-  notify(" Record Added SuccessFully", "success", 600);
+  notify(' Record Added SuccessFully', 'success', 600);
 }
 
-checkBoxToggled(e)
-{
-  //console.log(e.value);
-  if( e.value == true)
-  {
-    this.rentalchk = 1;
-  }
-  else{
-    this.rentalchk = 0;
-  }
 
-}
+
+
 RowUpdate(e)
 {
-
-  this.svc.Updatehandhelds(this.deviceobj).subscribe(resp =>
+  console.log('update' + e.data);
+  this.handheldobj.ahwalid =  this.selahwalid;
+  this.handheldobj.barcode =  e.data.barcode;
+  this.handheldobj.defective =  this.defectchk;
+  this.handheldobj.serial =  e.data.serial;
+  this.handheldobj.handheldid = e.data.handheldid;
+  this.svc.Updatehandhelds(this.handheldobj).subscribe(resp =>
     {
 
-      console.log('resp' + resp);
      this.LoadData();
   },
     error => {
@@ -197,15 +242,10 @@ RowUpdate(e)
 RowDelete(e)
 {
   this.cleardata();
-  this.deviceobj.ahwalid =  this.selahwalid;
-  this.deviceobj.barcode =  e.data.barcode;
-  this.deviceobj.defective =  e.data.defective;
-  this.deviceobj.devicenumber =  e.data.devicenumber;
-  this.deviceobj.model =  e.data.model;
-  this.deviceobj.rental = e.data.rental;
-  this.deviceobj.deviceid =  e.data.deviceid;
-  console.log(e);
-  this.svc.Addhandhelds(this.deviceobj).subscribe(resp =>
+
+  this.handheldobj.handheldid =  e.data.handheldid;
+ console.log('delete' + e.data);
+  this.svc.Deletehandhelds(this.handheldobj).subscribe(resp =>
     {
 
       console.log('resp' + resp);
@@ -215,6 +255,7 @@ RowDelete(e)
 
     });
 }
+
 
 
 }
